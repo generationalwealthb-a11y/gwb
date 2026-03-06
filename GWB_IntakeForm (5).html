@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Wealth Gap Assessment | Generational Wealth Builders</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B1930;--navy-d:#060F1E;--navy-m:#0F2040;
+  --gold:#C9A84C;--gold-lt:#DFC170;--gold-dim:rgba(201,168,76,0.10);
+  --gold-rule:rgba(201,168,76,0.22);--cream:#F5F1E8;
+  --white:#fff;--gray:#7A8196;--red:#C9344C;--green:#1A7048;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--navy-d);color:var(--cream);min-height:100vh;}
+
+/* ── HEADER ── */
+.site-header{background:var(--navy);border-bottom:1px solid var(--gold-rule);padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.h-brand{display:flex;align-items:center;gap:14px;}
+.h-brand img{height:42px;width:auto;border-radius:5px;}
+.h-brand-text{}
+.h-brand-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:#fff;}
+.h-brand-sub{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-top:1px;}
+.h-badge{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;background:var(--gold-dim);border:1px solid var(--gold-rule);color:var(--gold);padding:6px 14px;border-radius:20px;font-weight:600;}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:64px 24px 48px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(201,168,76,0.06) 0%,transparent 70%);pointer-events:none;}
+.hero-rule{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:18px;}
+.hero-rule-line{width:40px;height:1px;background:var(--gold-rule);}
+.hero-rule-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);}
+.hero-eyebrow{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;}
+.hero-h{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,58px);font-weight:700;color:#fff;line-height:1.05;margin:16px 0 10px;}
+.hero-h em{color:var(--gold);font-style:italic;}
+.hero-sub{font-size:15px;font-weight:300;color:rgba(255,255,255,0.45);max-width:520px;margin:0 auto 32px;line-height:1.7;}
+.hero-pips{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;}
+.pip{font-size:11px;color:rgba(255,255,255,0.35);display:flex;align-items:center;gap:7px;}
+.pip-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+
+/* ── PROGRESS ── */
+.progress-wrap{max-width:720px;margin:0 auto;padding:0 24px 24px;}
+.progress-track{height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(to right,var(--gold),var(--gold-lt));border-radius:2px;transition:width .5s ease;width:0%;}
+.progress-label{display:flex;justify-content:space-between;margin-bottom:8px;}
+.progress-step{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;}
+.progress-count{font-size:10px;color:var(--gray);}
+
+/* ── FORM WRAP ── */
+.form-wrap{max-width:720px;margin:0 auto;padding:0 24px 80px;}
+
+/* ── SECTION ── */
+.form-section{display:none;}
+.form-section.active{display:block;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.section-card{background:var(--navy);border:1px solid var(--gold-rule);border-radius:12px;padding:32px;margin-bottom:20px;position:relative;overflow:hidden;}
+.section-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+.section-num{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:6px;}
+.section-sub{font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);margin-bottom:28px;line-height:1.6;}
+
+/* ── FORM ELEMENTS ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:18px;}
+.form-group{margin-bottom:18px;}
+.f-label{display:block;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.f-label .opt{color:var(--gray);font-weight:400;letter-spacing:0;text-transform:none;font-size:10px;}
+.f-input,.f-select,.f-textarea{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:7px;padding:11px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:border-color .2s,background .2s;}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--gold);background:rgba(201,168,76,0.05);box-shadow:0 0 0 3px rgba(201,168,76,0.07);}
+.f-input::placeholder,.f-textarea::placeholder{color:rgba(255,255,255,0.18);}
+.f-select option{background:var(--navy);color:#fff;}
+.f-textarea{resize:vertical;min-height:80px;line-height:1.6;}
+.f-hint{font-size:11px;color:var(--gray);margin-top:5px;line-height:1.5;}
+.f-prefix{position:relative;}
+.f-prefix-sym{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--gold);font-family:'DM Mono',monospace;font-size:13px;font-weight:500;pointer-events:none;}
+.f-prefix .f-input{padding-left:28px;}
+.f-required{color:var(--red);margin-left:2px;}
+
+/* Radio/check options */
+.f-options{display:flex;flex-direction:column;gap:8px;}
+.f-opt{display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:7px;padding:10px 14px;cursor:pointer;transition:all .15s;}
+.f-opt:hover{border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.04);}
+.f-opt input{width:15px;height:15px;accent-color:var(--gold);flex-shrink:0;margin-top:2px;}
+.f-opt:has(input:checked){border-color:var(--gold);background:rgba(201,168,76,0.07);}
+.f-opt-text{font-size:13px;color:rgba(255,255,255,0.75);line-height:1.4;}
+.f-opt-sub{font-size:11px;color:var(--gray);margin-top:2px;}
+
+/* Conditional field */
+.conditional{display:none;}
+.conditional.show{display:block;animation:fadeUp .25s ease;}
+
+/* ── BOOK INSIGHT ── */
+.book-insight{background:rgba(201,168,76,0.05);border-left:3px solid var(--gold);border-radius:0 7px 7px 0;padding:14px 18px;margin:20px 0;}
+.bi-label{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:7px;}
+.bi-label::before{content:'📖';}
+.bi-quote{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:rgba(255,255,255,0.8);line-height:1.5;}
+
+/* ── NAV BUTTONS ── */
+.btn-row{display:flex;justify-content:space-between;align-items:center;margin-top:28px;gap:12px;}
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:7px;padding:13px 28px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+.btn-gold{background:var(--gold);color:var(--navy);}
+.btn-gold:hover{background:var(--gold-lt);transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,0.3);}
+.btn-ghost{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.08);}
+.btn-ghost:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);}
+.btn-lg{padding:16px 40px;font-size:14px;}
+
+/* ── ERROR STATE ── */
+.f-error{border-color:var(--red)!important;background:rgba(201,52,76,0.05)!important;}
+.f-error-msg{font-size:11px;color:var(--red);margin-top:4px;display:none;}
+.f-error-msg.show{display:block;}
+
+/* ── THANK YOU ── */
+#thankyou-screen{display:none;text-align:center;padding:80px 24px;}
+.ty-icon{font-size:56px;margin-bottom:24px;}
+.ty-title{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:700;color:#fff;margin-bottom:12px;line-height:1.1;}
+.ty-title em{color:var(--gold);font-style:italic;}
+.ty-sub{font-size:16px;font-weight:300;color:rgba(255,255,255,0.5);max-width:480px;margin:0 auto 36px;line-height:1.7;}
+.ty-card{background:var(--navy);border:1px solid var(--gold-rule);border-radius:12px;padding:32px;max-width:480px;margin:0 auto 32px;position:relative;overflow:hidden;}
+.ty-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+.ty-card-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px;}
+.ty-card-text{font-size:14px;font-weight:300;color:rgba(255,255,255,0.65);line-height:1.7;}
+.ty-name{color:#fff;font-weight:600;}
+.ty-gap{font-family:'DM Mono',monospace;font-size:28px;color:var(--gold);display:block;margin:8px 0;}
+
+/* ── SUBMITTING STATE ── */
+.submitting-overlay{display:none;position:fixed;inset:0;background:rgba(6,15,30,0.92);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+.submitting-overlay.show{display:flex;}
+.spin{width:44px;height:44px;border:3px solid rgba(201,168,76,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.submitting-text{font-size:13px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+
+
+/* ── BOOKING CALENDAR ── */
+#booking-screen{display:none;max-width:560px;margin:0 auto;padding:40px 24px 80px;}
+.bc-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.1;}
+.bc-title em{color:var(--gold);font-style:italic;}
+.bc-sub{font-size:14px;font-weight:300;color:rgba(255,255,255,0.45);margin-bottom:32px;line-height:1.7;}
+.bc-card{background:var(--navy);border:1px solid var(--gold-rule);border-radius:12px;padding:28px;margin-bottom:20px;position:relative;overflow:hidden;}
+.bc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+.bc-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px;}
+/* Mini calendar */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.cal-nav-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);padding:6px 14px;border-radius:5px;cursor:pointer;font-size:12px;font-family:'Outfit',sans-serif;}
+.cal-nav-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.cal-month-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:#fff;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-dh{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);text-align:center;padding:4px 0;}
+.cal-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:5px;font-size:12px;cursor:pointer;color:rgba(255,255,255,0.3);transition:all .15s;border:1px solid transparent;}
+.cal-cell.cur{color:rgba(255,255,255,0.7);}
+.cal-cell.cur:hover{background:rgba(201,168,76,0.12);border-color:rgba(201,168,76,0.3);color:#fff;}
+.cal-cell.past{cursor:default;opacity:0.25;}
+.cal-cell.selected{background:var(--gold);color:var(--navy);font-weight:700;border-color:var(--gold);}
+.cal-cell.today{border-color:rgba(201,168,76,0.4);color:var(--gold);}
+/* Time slots */
+.time-slots{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;}
+.time-slot{padding:10px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);cursor:pointer;font-size:13px;color:rgba(255,255,255,0.6);text-align:center;transition:all .15s;}
+.time-slot:hover{border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.06);color:#fff;}
+.time-slot.selected{border-color:var(--gold);background:rgba(201,168,76,0.12);color:#fff;font-weight:600;}
+.time-slot.unavail{opacity:0.3;cursor:not-allowed;pointer-events:none;}
+#selected-datetime{margin-top:16px;padding:12px 16px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:7px;font-size:13px;color:rgba(255,255,255,0.7);display:none;}
+#selected-datetime strong{color:var(--gold);}
+.btn-confirm-booking{width:100%;padding:15px;background:var(--gold);color:var(--navy);border:none;border-radius:7px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:16px;transition:all .2s;display:none;}
+.btn-confirm-booking:hover{background:var(--gold-lt);transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,0.3);}
+.bc-value-note{background:rgba(201,168,76,0.05);border-left:3px solid var(--gold);border-radius:0 7px 7px 0;padding:14px 18px;margin-bottom:20px;}
+.bc-value-label{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px;}
+.bc-value-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:rgba(255,255,255,0.75);line-height:1.6;}
+.booking-confirmed{display:none;text-align:center;padding:40px 20px;}
+.bc-confirm-icon{font-size:48px;margin-bottom:16px;}
+.bc-confirm-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#fff;margin-bottom:10px;}
+.bc-confirm-title em{color:var(--gold);font-style:italic;}
+.bc-confirm-sub{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;max-width:420px;margin:0 auto 24px;}
+.bc-confirm-detail{background:var(--navy);border:1px solid var(--gold-rule);border-radius:10px;padding:20px;margin:0 auto 16px;text-align:left;}
+.bc-confirm-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.bc-confirm-row:last-child{border-bottom:none;}
+.bc-confirm-key{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);width:80px;flex-shrink:0;}
+.bc-confirm-val{font-size:13px;color:#fff;font-weight:500;}
+
+@media(max-width:600px){
+  .form-grid,.form-grid-3{grid-template-columns:1fr;}
+  .site-header{padding:0 16px;}
+  .section-card{padding:22px 18px;}
+  .form-wrap,.progress-wrap{padding-left:16px;padding-right:16px;}
+  .hero{padding:44px 16px 36px;}
+  .btn-row{flex-direction:column-reverse;}
+  .btn{width:100%;justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="h-brand">
+    <img src="data:image/jpeg;base64,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" alt="GWB">
+    <div class="h-brand-text">
+      <div class="h-brand-name">Generational Wealth Builders</div>
+      <div class="h-brand-sub">Family Wealth Gap Assessment</div>
+    </div>
+  </div>
+  <div class="h-badge">Confidential · Pre-Session</div>
+</header>
+
+<div class="submitting-overlay" id="submitting-overlay">
+  <div class="spin"></div>
+  <div class="submitting-text">Submitting your assessment…</div>
+</div>
+
+<!-- ════ HERO ════ -->
+<section class="hero" id="hero-section">
+  <div class="hero-rule"><div class="hero-rule-line"></div><div class="hero-rule-dot"></div><div class="hero-rule-line"></div></div>
+  <div class="hero-eyebrow">Strictly Confidential · Pre-Session Form</div>
+  <h1 class="hero-h">Your <em>Family Wealth Gap</em><br>Assessment</h1>
+  <p class="hero-sub">This form takes about 8 minutes. Your answers allow your advisor to calculate the exact value your family needs to be protected — before your session begins. You will leave the session knowing your number and how to close it.</p>
+  <div class="hero-pips">
+    <span class="pip"><span class="pip-dot"></span>8 minutes</span>
+    <span class="pip"><span class="pip-dot"></span>Strictly private</span>
+    <span class="pip"><span class="pip-dot"></span>8 sections</span>
+    <span class="pip"><span class="pip-dot"></span>Your data is never shared</span>
+  </div>
+</section>
+
+<!-- ════ PROGRESS ════ -->
+<div class="progress-wrap">
+  <div class="progress-label">
+    <div class="progress-step" id="progress-step-label">Section 1 of 8</div>
+    <div class="progress-count" id="progress-count-label">Personal Details</div>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+</div>
+
+<!-- ════ FORM ════ -->
+<div class="form-wrap">
+<form id="gwb-form" novalidate>
+
+<!-- ─── SECTION 1: PERSONAL ─── -->
+<div class="form-section active" id="section-1">
+  <div class="section-card">
+    <div class="section-num">Section 1 of 8</div>
+    <div class="section-title">Personal Details</div>
+    <div class="section-sub">Basic information about you and your household.</div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Full Name <span class="f-required">*</span></label>
+        <input class="f-input" id="f_name" placeholder="Your full name" required>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Age <span class="f-required">*</span></label>
+        <input class="f-input" id="f_age" type="number" placeholder="35" min="18" max="75" required>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">WhatsApp Number <span class="f-required">*</span></label>
+        <div class="f-prefix"><span class="f-prefix-sym">+</span><input class="f-input" id="f_whatsapp" type="tel" placeholder="267 7X XXX XXX" required></div>
+        <div class="f-hint">Your advisor will use this to confirm your session and share your plan</div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Email Address <span class="opt">(optional)</span></label>
+        <input class="f-input" id="f_email" type="email" placeholder="your@email.com">
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Marital Status <span class="f-required">*</span></label>
+        <select class="f-select" id="f_marital" required>
+          <option value="">Select…</option>
+          <option value="single">Single</option>
+          <option value="married">Married / Life Partner</option>
+          <option value="divorced">Divorced</option>
+          <option value="widowed">Widowed</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Employment Type <span class="f-required">*</span></label>
+        <select class="f-select" id="f_emp" required>
+          <option value="">Select…</option>
+          <option value="employed">Employed (salaried)</option>
+          <option value="self_employed">Self-employed</option>
+          <option value="business_owner">Business owner</option>
+          <option value="contractor">Contractor / Freelance</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Number of Dependents</label>
+        <input class="f-input" id="f_dependents" type="number" placeholder="0" min="0">
+        <div class="f-hint">Children, parents, or anyone who relies on your income</div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Age of Youngest Dependent</label>
+        <input class="f-input" id="f_youngest" type="number" placeholder="e.g. 5">
+        <div class="f-hint">Leave blank if no dependents</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="f-label">Do you have a valid, up-to-date Will?</label>
+      <div class="f-options">
+        <label class="f-opt"><input type="radio" name="f_will" value="yes"><div class="f-opt-text">Yes — up to date<div class="f-opt-sub">Will has been reviewed in the last 3 years</div></div></label>
+        <label class="f-opt"><input type="radio" name="f_will" value="outdated"><div class="f-opt-text">Yes — but outdated<div class="f-opt-sub">Will exists but hasn't been updated recently</div></div></label>
+        <label class="f-opt"><input type="radio" name="f_will" value="no"><div class="f-opt-text">No<div class="f-opt-sub">No will currently in place</div></div></label>
+        <label class="f-opt"><input type="radio" name="f_will" value="unsure"><div class="f-opt-text">Not sure</div></label>
+      </div>
+    </div>
+
+    <div class="book-insight">
+      <div class="bi-label">From the Book</div>
+      <div class="bi-quote">"Protection is not about income. It is about responsibility."</div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <div></div>
+    <button type="button" class="btn btn-gold" onclick="nextSection(1)">Continue → Income <span>→</span></button>
+  </div>
+</div>
+
+<!-- ─── SECTION 2: INCOME ─── -->
+<div class="form-section" id="section-2">
+  <div class="section-card">
+    <div class="section-num">Section 2 of 8</div>
+    <div class="section-title">Your Income</div>
+    <div class="section-sub">All figures are monthly and net (take-home). This is used to calculate your family's gap and protection need.</div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Monthly Salary (net take-home) <span class="f-required">*</span></label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_salary" type="number" placeholder="0" required></div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Business Income <span class="opt">(monthly)</span></label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_business_inc" type="number" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Side / Part-time Income</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_side_inc" type="number" placeholder="0"></div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Rental / Investment Income</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_passive_inc" type="number" placeholder="0"></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="f-label">Spouse / Partner Income Status <span class="f-required">*</span></label>
+      <div class="f-options">
+        <label class="f-opt"><input type="radio" name="f_spouse_inc" value="none" onchange="toggleSpouse(false)"><div class="f-opt-text">None / Not applicable<div class="f-opt-sub">No spouse, or spouse has no income</div></div></label>
+        <label class="f-opt"><input type="radio" name="f_spouse_inc" value="partial" onchange="toggleSpouse(true)"><div class="f-opt-text">Partial — less than my income</div></label>
+        <label class="f-opt"><input type="radio" name="f_spouse_inc" value="equal" onchange="toggleSpouse(true)"><div class="f-opt-text">Similar to mine</div></label>
+        <label class="f-opt"><input type="radio" name="f_spouse_inc" value="full" onchange="toggleSpouse(true)"><div class="f-opt-text">Full independent income<div class="f-opt-sub">Spouse earns independently and could support the household</div></div></label>
+      </div>
+    </div>
+
+    <div class="conditional" id="spouse-salary-field">
+      <div class="form-group">
+        <label class="f-label">Spouse Monthly Salary (net) <span class="opt">(optional but helpful)</span></label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_spouse_salary" type="number" placeholder="0"></div>
+        <div class="f-hint">If known, this helps calculate the household's combined income and true dependency gap.</div>
+      </div>
+    </div>
+
+    <div class="book-insight">
+      <div class="bi-label">From the Book</div>
+      <div class="bi-quote">"73% of Botswana households have less than 4 months of financial runway. This question tells us which side of that line you are on."</div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button type="button" class="btn btn-ghost" onclick="prevSection(2)">← Back</button>
+    <button type="button" class="btn btn-gold" onclick="nextSection(2)">Continue → Expenses</button>
+  </div>
+</div>
+
+<!-- ─── SECTION 3: EXPENSES ─── -->
+<div class="form-section" id="section-3">
+  <div class="section-card">
+    <div class="section-num">Section 3 of 8</div>
+    <div class="section-title">Monthly Expenses</div>
+    <div class="section-sub">Your family's monthly cost of living. These are the obligations your family must maintain if your income stopped.</div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Rent / Bond (mortgage) <span class="f-required">*</span></label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_e_housing" type="number" placeholder="0" required></div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">School Fees</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_e_school" type="number" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Groceries & Food</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_e_food" type="number" placeholder="0"></div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Transport (fuel / public)</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_e_transport" type="number" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Electricity & Water</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_e_utilities" type="number" placeholder="0"></div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Medical Aid (monthly premium)</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_e_medical" type="number" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Insurance / Cover Premiums</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_e_insurance" type="number" placeholder="0"></div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Family Support (remittances)</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_e_remittance" type="number" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="f-label">Other Monthly Expenses</label>
+      <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_e_other" type="number" placeholder="0"></div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button type="button" class="btn btn-ghost" onclick="prevSection(3)">← Back</button>
+    <button type="button" class="btn btn-gold" onclick="nextSection(3)">Continue → Debts</button>
+  </div>
+</div>
+
+<!-- ─── SECTION 4: DEBTS ─── -->
+<div class="form-section" id="section-4">
+  <div class="section-card">
+    <div class="section-num">Section 4 of 8</div>
+    <div class="section-title">Outstanding Debts</div>
+    <div class="section-sub">Total amount still owed — not monthly payments. If your income stopped, these liabilities would still need to be settled.</div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Home Loan (outstanding balance)</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_d_mortgage" type="number" placeholder="0"></div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Vehicle Loan (outstanding)</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_d_vehicle" type="number" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Personal Loan(s)</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_d_personal" type="number" placeholder="0"></div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Credit Card Balance</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_d_credit" type="number" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Business Loan</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_d_business" type="number" placeholder="0"></div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Total Monthly Debt Payments</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_d_monthly" type="number" placeholder="0"></div>
+        <div class="f-hint">All debt repayments combined per month</div>
+      </div>
+    </div>
+
+    <div class="book-insight">
+      <div class="bi-label">From the Book</div>
+      <div class="bi-quote">"Outstanding debt does not disappear when you do. It becomes your family's first problem — before the grief has even settled."</div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button type="button" class="btn btn-ghost" onclick="prevSection(4)">← Back</button>
+    <button type="button" class="btn btn-gold" onclick="nextSection(4)">Continue → Savings</button>
+  </div>
+</div>
+
+<!-- ─── SECTION 5: SAVINGS & ASSETS ─── -->
+<div class="form-section" id="section-5">
+  <div class="section-card">
+    <div class="section-num">Section 5 of 8</div>
+    <div class="section-title">Savings & Assets</div>
+    <div class="section-sub">What your family could access immediately if your income stopped. Liquid savings reduce your gap — illiquid assets do not.</div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Emergency Fund (cash)</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_s_emergency" type="number" placeholder="0"></div>
+        <div class="f-hint">Money accessible within 30 days</div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Bank / Cash Savings</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_s_cash" type="number" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Investments / Portfolio</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_s_portfolio" type="number" placeholder="0"></div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Retirement Fund (current value)</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_s_retirement" type="number" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Primary Property (estimated value)</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_a_property" type="number" placeholder="0"></div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Business Value (if applicable)</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_a_business" type="number" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="f-label">Monthly Savings Contribution</label>
+      <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_s_monthly" type="number" placeholder="0"></div>
+      <div class="f-hint">How much you set aside each month across all saving vehicles</div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button type="button" class="btn btn-ghost" onclick="prevSection(5)">← Back</button>
+    <button type="button" class="btn btn-gold" onclick="nextSection(5)">Continue → Protection</button>
+  </div>
+</div>
+
+<!-- ─── SECTION 6: INSURANCE ─── -->
+<div class="form-section" id="section-6">
+  <div class="section-card">
+    <div class="section-num">Section 6 of 8</div>
+    <div class="section-title">Current Protection</div>
+    <div class="section-sub">What cover do you currently have in place? If you are unsure of exact amounts, give your best estimate.</div>
+
+    <div class="form-group">
+      <label class="f-label">Life Cover Status</label>
+      <div class="f-options">
+        <label class="f-opt"><input type="radio" name="f_life_status" value="none"><div class="f-opt-text">No life cover in place</div></label>
+        <label class="f-opt"><input type="radio" name="f_life_status" value="employer"><div class="f-opt-text">Employer-provided only<div class="f-opt-sub">Group scheme through work — ends if you leave</div></div></label>
+        <label class="f-opt"><input type="radio" name="f_life_status" value="private"><div class="f-opt-text">Private policy</div></label>
+        <label class="f-opt"><input type="radio" name="f_life_status" value="both"><div class="f-opt-text">Both employer and private</div></label>
+        <label class="f-opt"><input type="radio" name="f_life_status" value="unsure"><div class="f-opt-text">Not sure what I have</div></label>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Life Insurance Sum Assured</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_ins_life" type="number" placeholder="0"></div>
+        <div class="f-hint">Total payout if you passed away today</div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Funeral Cover Sum Assured</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_ins_funeral" type="number" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Disability Cover</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_ins_disability" type="number" placeholder="0"></div>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Total Monthly Premiums Paid</label>
+        <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_ins_premium" type="number" placeholder="0"></div>
+        <div class="f-hint">All insurance and cover premiums combined</div>
+      </div>
+    </div>
+
+    <div class="book-insight">
+      <div class="bi-label">From the Book</div>
+      <div class="bi-quote">"The question is never whether you can afford the premium. The question is whether the people who depend on you can afford the consequence of you not having it."</div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button type="button" class="btn btn-ghost" onclick="prevSection(6)">← Back</button>
+    <button type="button" class="btn btn-gold" onclick="nextSection(6)">Continue → Health</button>
+  </div>
+</div>
+
+<!-- ─── SECTION 7: HEALTH ─── -->
+<div class="form-section" id="section-7">
+  <div class="section-card">
+    <div class="section-num">Section 7 of 8</div>
+    <div class="section-title">Health & Underwriting</div>
+    <div class="section-sub">This information affects which products are available and at what premium. It is strictly confidential and shared only with your advisor.</div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="f-label">Overall Health Status</label>
+        <select class="f-select" id="f_health">
+          <option value="">Select…</option>
+          <option value="excellent">Excellent — no conditions</option>
+          <option value="good">Good — minor, no medication</option>
+          <option value="managed">Managed condition(s)</option>
+          <option value="complex">Complex / Multiple conditions</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="f-label">Do you smoke or use tobacco?</label>
+        <select class="f-select" id="f_smoker">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+          <option value="ex">Ex-smoker (12+ months ago)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="f-label">Do you have any of the following? <span class="opt">(select all that apply)</span></label>
+      <div class="f-options">
+        <label class="f-opt"><input type="checkbox" id="f_c_diabetes"><div class="f-opt-text">Diabetes</div></label>
+        <label class="f-opt"><input type="checkbox" id="f_c_hypertension"><div class="f-opt-text">Hypertension (high blood pressure)</div></label>
+        <label class="f-opt"><input type="checkbox" id="f_c_heart"><div class="f-opt-text">Heart condition</div></label>
+        <label class="f-opt"><input type="checkbox" id="f_c_cancer"><div class="f-opt-text">Cancer (current or history)</div></label>
+        <label class="f-opt"><input type="checkbox" id="f_c_hiv"><div class="f-opt-text">HIV-positive</div></label>
+        <label class="f-opt"><input type="checkbox" id="f_c_none"><div class="f-opt-text">None of the above</div></label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="f-label">Do you own a business?</label>
+      <div class="f-options">
+        <label class="f-opt"><input type="radio" name="f_business" value="no"><div class="f-opt-text">No</div></label>
+        <label class="f-opt"><input type="radio" name="f_business" value="yes_side"><div class="f-opt-text">Yes — side business</div></label>
+        <label class="f-opt"><input type="radio" name="f_business" value="yes_primary"><div class="f-opt-text">Yes — primary income source<div class="f-opt-sub">Business is how you earn your main income</div></div></label>
+      </div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button type="button" class="btn btn-ghost" onclick="prevSection(7)">← Back</button>
+    <button type="button" class="btn btn-gold" onclick="nextSection(7)">Continue → Session Goals</button>
+  </div>
+</div>
+
+<!-- ─── SECTION 8: SESSION CONTEXT ─── -->
+<div class="form-section" id="section-8">
+  <div class="section-card">
+    <div class="section-num">Section 8 of 8</div>
+    <div class="section-title">Your Session Goals</div>
+    <div class="section-sub">This helps your advisor understand where you are and prepare the right conversation for you.</div>
+
+    <div class="form-group">
+      <label class="f-label">What brought you here today? <span class="f-required">*</span></label>
+      <div class="f-options">
+        <label class="f-opt"><input type="radio" name="f_reason" value="gap_unknown" required><div class="f-opt-text">I have never calculated my gap and want to know<div class="f-opt-sub">I don't know what my family is exposed to</div></div></label>
+        <label class="f-opt"><input type="radio" name="f_reason" value="nothing_act"><div class="f-opt-text">I have nothing in place and I know I need to act</div></label>
+        <label class="f-opt"><input type="radio" name="f_reason" value="review"><div class="f-opt-text">I have something in place but want to review it</div></label>
+        <label class="f-opt"><input type="radio" name="f_reason" value="event"><div class="f-opt-text">A recent event made me think about this<div class="f-opt-sub">A death, illness, new baby, promotion, or similar</div></div></label>
+        <label class="f-opt"><input type="radio" name="f_reason" value="book"><div class="f-opt-text">I read the book and want to close my gap</div></label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="f-label">How ready are you to take action today?</label>
+      <div class="f-options">
+        <label class="f-opt"><input type="radio" name="f_readiness" value="ready"><div class="f-opt-text">Ready to act — I just need the right solution</div></label>
+        <label class="f-opt"><input type="radio" name="f_readiness" value="likely"><div class="f-opt-text">Likely — if the numbers make sense</div></label>
+        <label class="f-opt"><input type="radio" name="f_readiness" value="exploring"><div class="f-opt-text">Exploring — gathering information first</div></label>
+        <label class="f-opt"><input type="radio" name="f_readiness" value="partner"><div class="f-opt-text">Need to discuss with spouse / partner first</div></label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="f-label">Monthly budget you are comfortable with for cover <span class="opt">(optional)</span></label>
+      <div class="f-prefix"><span class="f-prefix-sym">P</span><input class="f-input" id="f_budget" type="number" placeholder="e.g. 500"></div>
+      <div class="f-hint">Your advisor will show you the outcome this unlocks — not just the monthly amount. The conversation is about what your family receives, not what you pay.</div>
+    </div>
+
+    <div class="form-group">
+      <label class="f-label">Anything else your advisor should know? <span class="opt">(optional)</span></label>
+      <textarea class="f-textarea" id="f_notes" placeholder="Specific concerns, questions, or context that will help your advisor prepare…"></textarea>
+    </div>
+
+    <div class="book-insight">
+      <div class="bi-label">From the Book</div>
+      <div class="bi-quote">"Nobody ever sat with him and showed him what was possible. This session exists so that is never said about you."</div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button type="button" class="btn btn-ghost" onclick="prevSection(8)">← Back</button>
+    <button type="button" class="btn btn-gold btn-lg" onclick="submitForm()">Submit My Assessment →</button>
+  </div>
+</div>
+
+</form>
+</div>
+
+<!-- ════ THANK YOU ════ -->
+<div id="thankyou-screen">
+  <div class="ty-icon">✅</div>
+  <h2 class="ty-title">Assessment<br><em>Received</em></h2>
+  <p class="ty-sub">Your advisor has been notified. In a moment you will be taken to book your session date and time directly. No back-and-forth needed — pick your time now.</p>
+  <div class="ty-card">
+    <div class="ty-card-label">What Happens Next</div>
+    <div class="ty-card-text">
+      Your advisor will review your assessment and calculate your family's precise gap before your session.<br><br>
+      Come to your session knowing that the numbers are already done — the conversation will be focused entirely on <strong>your family's plan</strong>.
+    </div>
+  </div>
+  <div class="ty-card" style="margin-top:16px;">
+    <div class="ty-card-label">A Thought to Carry</div>
+    <div class="ty-card-text" style="font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(255,255,255,0.8);line-height:1.6;">
+      "The families who suffer most are almost always the ones where the person loved them completely — they simply never closed the gap.<br><br>You are closing yours."
+    </div>
+  </div>
+</div>
+
+<!-- ════ BOOKING SCREEN ════ -->
+<div id="booking-screen">
+  <div class="bc-value-note">
+    <div class="bc-value-label">Your Session</div>
+    <div class="bc-value-text">"Your advisor will have your gap number calculated before you arrive. The session is not about deciding whether to protect your family — it is about choosing how."</div>
+  </div>
+  <h2 class="bc-title">Book Your<br><em>Wealth Gap Session</em></h2>
+  <p class="bc-sub">Choose a date and time. Your advisor will confirm via email within the hour. The session is free, private, and takes approximately 45 minutes.</p>
+
+  <div class="bc-card">
+    <div class="bc-label">Select a Date</div>
+    <div class="cal-nav">
+      <button class="cal-nav-btn" onclick="bookCalNav(-1)">←</button>
+      <div class="cal-month-name" id="book-cal-month"></div>
+      <button class="cal-nav-btn" onclick="bookCalNav(1)">→</button>
+    </div>
+    <div class="cal-grid" id="book-cal-grid"></div>
+  </div>
+
+  <div class="bc-card" id="timeslot-card" style="display:none;">
+    <div class="bc-label">Select a Time</div>
+    <div class="time-slots" id="time-slots-grid"></div>
+  </div>
+
+  <div id="selected-datetime"></div>
+  <button class="btn-confirm-booking" id="btn-confirm-booking" onclick="confirmBooking()">
+    Confirm My Session →
+  </button>
+
+  <!-- Confirmed state -->
+  <div class="booking-confirmed" id="booking-confirmed">
+    <div class="bc-confirm-icon">🗓️</div>
+    <div class="bc-confirm-title">Session <em>Confirmed</em></div>
+    <div class="bc-confirm-sub">Your advisor has been notified by email with your full booking details. A confirmation will reach you shortly.</div>
+    <div class="bc-confirm-detail" id="bc-confirm-detail"></div>
+    <div class="bc-value-note" style="margin-top:20px;">
+      <div class="bc-value-label">A Thought to Carry</div>
+      <div class="bc-value-text">"You are not buying a product. You are deciding what your family's next chapter looks like — when they need it most."</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  GWB CLIENT INTAKE FORM
+//  Submits to Google Apps Script → Platform auto-populates
+// ═══════════════════════════════════════════════════════
+
+// ── CONFIGURATION — paste your Apps Script URL here after deploying ──
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxnGraYY8isI4tmWOqfxLLXT4VKMSrMFGm6LwuAWbt_zhScEvFmlCDNSRmshyzbwEWkDA/exec';
+const SCRIPT_KEY = 'GWB2025';
+const ADVISOR_EMAIL = 'generationalwealthb@gmail.com';
+
+const SECTION_NAMES = [
+  '','Personal Details','Income','Expenses',
+  'Debts','Savings & Assets','Protection',
+  'Health','Session Goals'
+];
+
+let currentSection = 1;
+const TOTAL_SECTIONS = 8;
+
+// ── NAVIGATION ──────────────────────────────────────────
+function nextSection(n) {
+  if (!validateSection(n)) return;
+  hideSection(n);
+  showSection(n + 1);
+  currentSection = n + 1;
+  updateProgress(n + 1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function prevSection(n) {
+  hideSection(n);
+  showSection(n - 1);
+  currentSection = n - 1;
+  updateProgress(n - 1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function hideSection(n) {
+  document.getElementById('section-' + n).classList.remove('active');
+}
+
+function showSection(n) {
+  document.getElementById('section-' + n).classList.add('active');
+}
+
+function updateProgress(n) {
+  const pct = ((n - 1) / TOTAL_SECTIONS) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-step-label').textContent = 'Section ' + n + ' of ' + TOTAL_SECTIONS;
+  document.getElementById('progress-count-label').textContent = SECTION_NAMES[n];
+}
+
+// ── SPOUSE INCOME TOGGLE ────────────────────────────────
+function toggleSpouse(show) {
+  const field = document.getElementById('spouse-salary-field');
+  field.classList.toggle('show', show);
+}
+
+// ── VALIDATION ──────────────────────────────────────────
+function validateSection(n) {
+  let valid = true;
+  const section = document.getElementById('section-' + n);
+  section.querySelectorAll('[required]').forEach(el => {
+    el.classList.remove('f-error');
+    if (!el.value.trim()) {
+      el.classList.add('f-error');
+      valid = false;
+    }
+  });
+  // Radio groups with required
+  if (n === 2) {
+    const spouseChecked = document.querySelector('input[name="f_spouse_inc"]:checked');
+    if (!spouseChecked) {
+      valid = false;
+      alert('Please select your spouse / partner income status.');
+    }
+  }
+  if (n === 8) {
+    const reasonChecked = document.querySelector('input[name="f_reason"]:checked');
+    if (!reasonChecked) {
+      valid = false;
+      alert('Please tell us what brought you here today.');
+    }
+  }
+  if (!valid) {
+    const firstErr = section.querySelector('.f-error');
+    if (firstErr) firstErr.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+  return valid;
+}
+
+// ── COLLECT FORM DATA ───────────────────────────────────
+function collectData() {
+  const gv = id => parseFloat(document.getElementById(id)?.value) || 0;
+  const gs = id => document.getElementById(id)?.value || '';
+  const gr = name => document.querySelector(`input[name="${name}"]:checked`)?.value || '';
+  const gc = id => document.getElementById(id)?.checked || false;
+
+  return {
+    // Meta
+    submitted_at: new Date().toISOString(),
+    source: 'intake_form',
+
+    // Profile
+    name: gs('f_name'),
+    age: gv('f_age'),
+    whatsapp: gs('f_whatsapp'),
+    email: gs('f_email'),
+    marital: gs('f_marital'),
+    emp: gs('f_emp'),
+    dependents: gv('f_dependents'),
+    youngest: gv('f_youngest'),
+    will: gr('f_will'),
+    business: gr('f_business') || 'no',
+
+    // Income
+    salary: gv('f_salary'),
+    business_inc: gv('f_business_inc'),
+    side_inc: gv('f_side_inc'),
+    passive_inc: gv('f_passive_inc'),
+    spouse_income: gr('f_spouse_inc') || 'none',
+    spouse_salary: gv('f_spouse_salary'),
+
+    // Expenses
+    e_housing: gv('f_e_housing'),
+    e_school: gv('f_e_school'),
+    e_food: gv('f_e_food'),
+    e_transport: gv('f_e_transport'),
+    e_utilities: gv('f_e_utilities'),
+    e_medical: gv('f_e_medical'),
+    e_insurance: gv('f_e_insurance'),
+    e_remittance: gv('f_e_remittance'),
+    e_other: gv('f_e_other'),
+
+    // Debts
+    d_mortgage: gv('f_d_mortgage'),
+    d_vehicle: gv('f_d_vehicle'),
+    d_personal: gv('f_d_personal'),
+    d_credit: gv('f_d_credit'),
+    d_business: gv('f_d_business'),
+    d_monthly: gv('f_d_monthly'),
+
+    // Savings & Assets
+    s_emergency: gv('f_s_emergency'),
+    s_cash: gv('f_s_cash'),
+    s_portfolio: gv('f_s_portfolio'),
+    s_retirement: gv('f_s_retirement'),
+    s_monthly: gv('f_s_monthly'),
+    a_property: gv('f_a_property'),
+    a_business: gv('f_a_business'),
+
+    // Insurance
+    life_status: gr('f_life_status') || 'none',
+    ins_life: gv('f_ins_life'),
+    ins_funeral: gv('f_ins_funeral'),
+    ins_disability: gv('f_ins_disability'),
+    ins_premium: gv('f_ins_premium'),
+
+    // Health
+    health: gs('f_health') || 'good',
+    smoker: gs('f_smoker') || 'no',
+    c_diabetes: gc('f_c_diabetes'),
+    c_hypertension: gc('f_c_hypertension'),
+    c_heart: gc('f_c_heart'),
+    c_cancer: gc('f_c_cancer'),
+    c_hiv: gc('f_c_hiv'),
+
+    // Session
+    reason: gr('f_reason'),
+    readiness: gr('f_readiness') || 'exploring',
+    budget: gv('f_budget'),
+    notes: gs('f_notes'),
+  };
+}
+
+// ── SUBMIT ──────────────────────────────────────────────
+async function submitForm() {
+  if (!validateSection(8)) return;
+
+  const data = collectData();
+  document.getElementById('submitting-overlay').classList.add('show');
+
+  try {
+    const response = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'intake', key: SCRIPT_KEY, data }),
+      headers: { 'Content-Type': 'text/plain' },
+      redirect: 'follow'
+    });
+    const text = await response.text();
+    const result = JSON.parse(text);
+    if (!result.success) console.error('Server error:', result.error);
+  } catch(e) {
+    console.error('Submission error:', e);
+  }
+
+  document.getElementById('submitting-overlay').classList.remove('show');
+
+  // Show thank you then transition to booking after 3 seconds
+  document.getElementById('gwb-form').style.display = 'none';
+  document.querySelector('.progress-wrap').style.display = 'none';
+  document.getElementById('hero-section').style.display = 'none';
+  document.getElementById('thankyou-screen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Auto-advance to booking calendar after 3 seconds
+  setTimeout(() => showBookingCalendar(data), 3000);
+}
+
+// ── BOOKING CALENDAR ──────────────────────────────────────────
+let bookCalYear = new Date().getFullYear();
+let bookCalMonth = new Date().getMonth();
+let selectedBookDate = null;
+let selectedBookTime = null;
+let submittedClientName = '';
+let submittedClientData = null;
+
+const TIME_SLOTS = [
+  '08:00', '09:00', '10:00', '11:00',
+  '13:00', '14:00', '15:00', '16:00',
+  '17:00', '18:00'
+];
+
+function bookCalNav(dir) {
+  bookCalMonth += dir;
+  if (bookCalMonth > 11) { bookCalMonth = 0; bookCalYear++; }
+  if (bookCalMonth < 0)  { bookCalMonth = 11; bookCalYear--; }
+  renderBookCal();
+}
+
+function renderBookCal() {
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const days = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  document.getElementById('book-cal-month').textContent = months[bookCalMonth] + ' ' + bookCalYear;
+
+  const firstDay = new Date(bookCalYear, bookCalMonth, 1).getDay();
+  const daysInMonth = new Date(bookCalYear, bookCalMonth + 1, 0).getDate();
+  const prevDays = new Date(bookCalYear, bookCalMonth, 0).getDate();
+
+  let html = days.map(d => `<div class="cal-dh">${d}</div>`).join('');
+
+  for (let i = firstDay - 1; i >= 0; i--) {
+    html += `<div class="cal-cell">${prevDays - i}</div>`;
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const pad = n => String(n).padStart(2,'0');
+    const dateStr = bookCalYear + '-' + pad(bookCalMonth+1) + '-' + pad(d);
+    const cellDate = new Date(bookCalYear, bookCalMonth, d);
+    const isPast = cellDate < today;
+    const isToday = cellDate.getTime() === today.getTime();
+    const isSel = dateStr === selectedBookDate;
+    const isWeekend = cellDate.getDay() === 0 || cellDate.getDay() === 6;
+    let cls = 'cal-cell cur';
+    if (isPast) cls = 'cal-cell past';
+    else if (isSel) cls = 'cal-cell selected';
+    else if (isToday) cls += ' today';
+    const onclick = isPast ? '' : `onclick="selectBookDate('${dateStr}', this)"`;
+    const style = isWeekend && !isPast ? 'style="opacity:0.5;"' : '';
+    html += `<div class="${cls}" ${onclick} ${style}>${d}</div>`;
+  }
+
+  document.getElementById('book-cal-grid').innerHTML = html;
+}
+
+function selectBookDate(dateStr, el) {
+  selectedBookDate = dateStr;
+  selectedBookTime = null;
+  document.querySelectorAll('.cal-cell').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+
+  // Show time slots
+  const timecardEl = document.getElementById('timeslot-card');
+  timecardEl.style.display = 'block';
+  timecardEl.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+  const dt = new Date(dateStr + 'T00:00:00');
+  const label = dt.toLocaleDateString('en-ZA', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+  let slotsHTML = '';
+  TIME_SLOTS.forEach(t => {
+    const hr = parseInt(t.split(':')[0]);
+    const period = hr < 12 ? 'AM' : 'PM';
+    const hr12 = hr > 12 ? hr - 12 : hr;
+    slotsHTML += `<div class="time-slot" onclick="selectTime('${t}', this)">${hr12}:00 ${period}</div>`;
+  });
+  document.getElementById('time-slots-grid').innerHTML = slotsHTML;
+  document.getElementById('selected-datetime').style.display = 'none';
+  document.getElementById('btn-confirm-booking').style.display = 'none';
+}
+
+function selectTime(time, el) {
+  selectedBookTime = time;
+  document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+
+  if (selectedBookDate && selectedBookTime) {
+    const dt = new Date(selectedBookDate + 'T00:00:00');
+    const dateLabel = dt.toLocaleDateString('en-ZA', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    const hr = parseInt(selectedBookTime.split(':')[0]);
+    const period = hr < 12 ? 'AM' : 'PM';
+    const hr12 = hr > 12 ? hr - 12 : hr;
+    const timeLabel = hr12 + ':00 ' + period;
+
+    const sdEl = document.getElementById('selected-datetime');
+    sdEl.style.display = 'block';
+    sdEl.innerHTML = `<strong>Selected:</strong> ${dateLabel} at ${timeLabel}`;
+
+    document.getElementById('btn-confirm-booking').style.display = 'block';
+  }
+}
+
+async function confirmBooking() {
+  if (!selectedBookDate || !selectedBookTime) {
+    alert('Please select both a date and a time.');
+    return;
+  }
+
+  const dt = new Date(selectedBookDate + 'T00:00:00');
+  const dateLabel = dt.toLocaleDateString('en-ZA', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const hr = parseInt(selectedBookTime.split(':')[0]);
+  const period = hr < 12 ? 'AM' : 'PM';
+  const hr12 = hr > 12 ? hr - 12 : hr;
+  const timeLabel = hr12 + ':00 ' + period;
+
+  // Save booking to Apps Script (attach to existing client record)
+  if (APPS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE' && submittedClientData) {
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'updateBooking',
+          key: SCRIPT_KEY,
+          data: {
+            name: submittedClientData.name,
+            whatsapp: submittedClientData.whatsapp,
+            email: submittedClientData.email,
+            session_date: selectedBookDate,
+            session_time: selectedBookTime,
+            submitted_at: submittedClientData.submitted_at
+          }
+        }),
+        headers: { 'Content-Type': 'text/plain' },
+        redirect: 'follow'
+      });
+    } catch(e) { console.error('Booking sync error:', e); }
+  }
+
+  // Email alert to advisor via Apps Script
+  const clientName = submittedClientData?.name || 'Client';
+  if (APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('YOUR_APPS') === -1) {
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'sendBookingAlert',
+          key: SCRIPT_KEY,
+          data: {
+            clientName,
+            clientPhone:  submittedClientData?.whatsapp   || '',
+            clientEmail:  submittedClientData?.email      || '',
+            sessionDate:  selectedBookDate,
+            sessionTime:  selectedBookTime,
+            dateLabel,
+            timeLabel,
+            reason:       submittedClientData?.reason     || '',
+            readiness:    submittedClientData?.readiness  || '',
+            income:       submittedClientData?.salary     || 0,
+            dependents:   submittedClientData?.dependents || 0,
+          }
+        }),
+        headers: { 'Content-Type': 'text/plain' },
+        redirect: 'follow'
+      });
+    } catch(e) { console.error('Email alert error:', e); }
+  }
+
+  // Show confirmed state
+  document.getElementById('bc-confirm-detail').innerHTML = `
+    <div class="bc-confirm-row"><div class="bc-confirm-key">Client</div><div class="bc-confirm-val">${clientName}</div></div>
+    <div class="bc-confirm-row"><div class="bc-confirm-key">Date</div><div class="bc-confirm-val">${dateLabel}</div></div>
+    <div class="bc-confirm-row"><div class="bc-confirm-key">Time</div><div class="bc-confirm-val">${timeLabel}</div></div>
+    <div class="bc-confirm-row"><div class="bc-confirm-key">Type</div><div class="bc-confirm-val">Family Wealth Gap Session · 45 minutes</div></div>
+  `;
+
+  document.getElementById('booking-confirmed').style.display = 'block';
+  document.querySelector('.bc-card').style.display = 'none';
+  document.getElementById('timeslot-card').style.display = 'none';
+  document.getElementById('selected-datetime').style.display = 'none';
+  document.getElementById('btn-confirm-booking').style.display = 'none';
+  document.querySelector('.bc-title').style.display = 'none';
+  document.querySelector('.bc-sub').style.display = 'none';
+  document.querySelector('.bc-value-note').style.display = 'none';
+  document.getElementById('booking-confirmed').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function showBookingCalendar(data) {
+  submittedClientData = data;
+  submittedClientName = data?.name || '';
+  bookCalYear = new Date().getFullYear();
+  bookCalMonth = new Date().getMonth();
+  selectedBookDate = null;
+  selectedBookTime = null;
+  document.getElementById('thankyou-screen').style.display = 'none';
+  document.getElementById('booking-screen').style.display = 'block';
+  renderBookCal();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+</script>
+</body>
+</html>

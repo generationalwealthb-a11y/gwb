@@ -1,0 +1,2666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Wealth Gap Assessment | Generational Wealth Builders</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root {
+  --navy:     #0D1B2A;
+  --navy-d:   #080F1A;
+  --navy-m:   #111E30;
+  --navy-l:   #162540;
+  --gold:     #C9A84C;
+  --gold-lt:  #DFC170;
+  --gold-dim: rgba(201,168,76,0.14);
+  --gold-dim2:rgba(201,168,76,0.07);
+  --cream:    #F5F1E8;
+  --white:    #FFFFFF;
+  --gray:     #7A8196;
+  --dgray:    #3A4055;
+  --green:    #1A7048;
+  --green-lt: #E6F4EE;
+  --red:      #8C1D1D;
+  --red-lt:   #FDEAEA;
+  --amber:    #B86010;
+  --amber-lt: #FEF0E0;
+  --blue:     #1A4A7A;
+  --blue-lt:  #EAF1FB;
+  --mono:     'DM Mono', monospace;
+  --body:     'Outfit', sans-serif;
+  --serif:    'Cormorant Garamond', serif;
+  --sidebar-w: 260px;
+  --topbar-h:  58px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:14px;}
+body{font-family:var(--body);background:var(--navy-d);color:var(--cream);min-height:100vh;overflow-x:hidden;}
+
+/* ════ LAYOUT ════ */
+.app{display:flex;min-height:100vh;}
+.sidebar{width:var(--sidebar-w);background:var(--navy);border-right:1px solid rgba(201,168,76,0.1);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:200;transition:transform .3s;}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;}
+.topbar{height:var(--topbar-h);background:var(--navy);border-bottom:1px solid rgba(201,168,76,0.1);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:100;}
+.content{flex:1;padding:28px;overflow-y:auto;}
+
+/* ════ SIDEBAR ════ */
+.sb-logo{padding:22px 20px 16px;border-bottom:1px solid rgba(201,168,76,0.1);}
+.sb-logo-mark{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:3px;}
+.sb-logo-name{font-family:var(--serif);font-size:18px;font-weight:700;color:#fff;line-height:1.1;}
+.sb-logo-sub{font-size:10px;color:var(--gray);margin-top:2px;letter-spacing:0.5px;}
+
+.sb-client-box{margin:14px 14px 8px;background:var(--gold-dim2);border:1px solid rgba(201,168,76,0.15);border-radius:8px;padding:12px 14px;}
+.sb-client-label{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px;}
+.sb-client-name{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
+.sb-client-meta{font-size:11px;color:var(--gray);}
+.sb-client-score{display:flex;align-items:center;gap:6px;margin-top:8px;}
+.sb-score-val{font-family:var(--mono);font-size:18px;font-weight:500;color:var(--gold);}
+.sb-score-label{font-size:10px;color:var(--gray);}
+.sb-score-bar{flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;}
+.sb-score-fill{height:100%;background:linear-gradient(to right,#C9A84C,#DFC170);border-radius:2px;transition:width .6s ease;}
+
+.sb-section{padding:14px 14px 0;}
+.sb-section-label{font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.25);font-weight:600;margin-bottom:8px;padding:0 6px;}
+.sb-nav-item{display:flex;align-items:center;gap:9px;padding:9px 10px;cursor:pointer;border-radius:6px;font-size:12.5px;color:rgba(255,255,255,0.45);font-weight:400;transition:all .15s;margin-bottom:1px;border-left:2px solid transparent;}
+.sb-nav-item:hover{background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.8);}
+.sb-nav-item.active{background:var(--gold-dim);color:#fff;border-left-color:var(--gold);}
+.sb-nav-icon{font-size:13px;width:18px;text-align:center;flex-shrink:0;}
+.sb-nav-badge{margin-left:auto;background:rgba(201,168,76,0.2);color:var(--gold);font-size:9px;font-weight:700;padding:2px 6px;border-radius:20px;font-family:var(--mono);}
+.sb-divider{height:1px;background:rgba(255,255,255,0.05);margin:8px 14px;}
+.sb-footer{margin-top:auto;padding:14px 16px;border-top:1px solid rgba(255,255,255,0.05);}
+.sb-footer-text{font-size:10px;color:rgba(255,255,255,0.2);line-height:1.5;}
+
+/* ════ TOPBAR ════ */
+.tb-left{display:flex;align-items:center;gap:14px;}
+.tb-page-title{font-family:var(--serif);font-size:16px;font-weight:600;color:#fff;}
+.tb-page-sub{font-size:11px;color:var(--gray);}
+.tb-right{display:flex;align-items:center;gap:10px;}
+.tb-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:5px;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s;border:none;font-family:var(--body);}
+.tb-btn-gold{background:var(--gold);color:var(--navy);}
+.tb-btn-gold:hover{background:var(--gold-lt);}
+.tb-btn-outline{background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--gold);}
+.tb-btn-outline:hover{background:var(--gold-dim);}
+.tb-btn-ghost{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.08);}
+.tb-btn-ghost:hover{background:rgba(255,255,255,0.1);}
+.tb-status{font-size:10px;color:var(--gray);font-family:var(--mono);}
+
+
+/* ════ CALENDAR ════ */
+.cal-day-header{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-weight:600;text-align:center;padding:6px 0;}
+.cal-day{min-height:64px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:6px;padding:6px;cursor:default;transition:border-color .15s;}
+.cal-day:hover{border-color:rgba(201,168,76,0.2);}
+.cal-day.today{border-color:var(--gold);background:rgba(201,168,76,0.06);}
+.cal-day.other-month{opacity:0.3;}
+.cal-day.has-session{background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3);cursor:pointer;}
+.cal-day-num{font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);margin-bottom:4px;}
+.cal-day.today .cal-day-num{color:var(--gold);}
+.cal-session-dot{font-size:9px;background:var(--gold);color:var(--navy);border-radius:3px;padding:1px 5px;margin-bottom:2px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+.cal-session-dot:hover{background:var(--gold-lt);}
+.session-list-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--navy-m);border-radius:7px;margin-bottom:8px;cursor:pointer;border:1px solid rgba(255,255,255,0.06);transition:border-color .15s;}
+.session-list-item:hover{border-color:rgba(201,168,76,0.3);}
+.sli-date{font-family:var(--mono);font-size:11px;color:var(--gold);min-width:72px;}
+.sli-name{font-size:13px;font-weight:600;color:#fff;flex:1;}
+.sli-meta{font-size:11px;color:var(--gray);}
+.sli-status{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:700;letter-spacing:.5px;}
+.sli-status.booked{background:rgba(26,74,122,0.3);color:#6AB0F5;}
+.sli-status.seen{background:rgba(100,60,180,0.2);color:#B070FF;}
+.sli-status.closed{background:rgba(26,112,72,0.2);color:#28C070;}
+.cal-empty{font-size:12px;color:var(--gray);padding:14px 0;font-style:italic;}
+
+/* ════ PANELS ════ */
+.panel{display:none;}
+.panel.active{display:block;animation:fadeIn .2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* ════ CARDS ════ */
+.card{background:var(--navy);border:1px solid rgba(201,168,76,0.1);border-radius:10px;padding:24px;margin-bottom:20px;}
+.card-header{margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.card-title{font-family:var(--serif);font-size:19px;font-weight:700;color:#fff;margin-bottom:3px;}
+.card-sub{font-size:12px;color:var(--gray);line-height:1.5;}
+.card-section{margin-bottom:20px;}
+.section-label{font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(201,168,76,0.12);}
+
+/* ════ GRID LAYOUTS ════ */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;}
+.grid-2-1{display:grid;grid-template-columns:2fr 1fr;gap:20px;}
+.col-span-2{grid-column:span 2;}
+.col-span-3{grid-column:span 3;}
+
+/* ════ FORM ELEMENTS ════ */
+.form-group{margin-bottom:14px;}
+.f-label{display:block;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.f-label .opt{color:var(--gray);font-weight:400;letter-spacing:0;text-transform:none;font-size:10px;}
+.f-input,.f-select,.f-textarea{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:6px;padding:9px 12px;color:#fff;font-family:var(--body);font-size:13px;outline:none;transition:border-color .2s,background .2s;}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--gold);background:rgba(201,168,76,0.05);}
+.f-input::placeholder,.f-textarea::placeholder{color:rgba(255,255,255,0.18);}
+.f-select option{background:var(--navy);color:#fff;}
+.f-textarea{resize:vertical;min-height:72px;line-height:1.6;}
+.f-hint{font-size:10.5px;color:var(--gray);margin-top:4px;line-height:1.5;}
+.f-prefix{position:relative;}
+.f-prefix-symbol{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gold);font-family:var(--mono);font-size:12px;font-weight:600;pointer-events:none;}
+.f-prefix .f-input{padding-left:26px;}
+.f-radio-group,.f-check-group{display:flex;flex-direction:column;gap:6px;}
+.f-opt{display:flex;align-items:flex-start;gap:9px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:9px 12px;cursor:pointer;transition:all .15s;}
+.f-opt:hover{border-color:rgba(201,168,76,0.35);background:rgba(201,168,76,0.04);}
+.f-opt input{width:14px;height:14px;accent-color:var(--gold);flex-shrink:0;margin-top:1px;}
+.f-opt:has(input:checked){border-color:var(--gold);background:rgba(201,168,76,0.07);}
+.f-opt-text{font-size:12.5px;color:rgba(255,255,255,0.75);}
+
+/* ════ METRIC CARDS ════ */
+.metric-card{background:var(--navy-m);border-radius:8px;padding:16px 18px;border-top:2px solid var(--gold);position:relative;overflow:hidden;}
+
+.metric-label{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px;}
+.metric-val{font-family:var(--mono);font-size:22px;font-weight:500;color:#fff;margin-bottom:3px;line-height:1;}
+.metric-sub{font-size:11px;color:var(--gray);line-height:1.4;}
+.metric-card.danger{border-top-color:#C9344C;}.metric-card.danger .metric-label{color:#C9344C;}
+.metric-card.success{border-top-color:#1A9060;}.metric-card.success .metric-label{color:#1A9060;}
+.metric-card.warning{border-top-color:#C98010;}.metric-card.warning .metric-label{color:#C98010;}
+.metric-card.info{border-top-color:#2080C0;}.metric-card.info .metric-label{color:#2080C0;}
+
+/* ════ INSIGHT BLOCKS ════ */
+.insight{display:flex;gap:12px;padding:13px 16px;border-radius:7px;margin-bottom:8px;}
+.insight.red{background:var(--red-lt);border-left:3px solid #C9344C;}
+.insight.amber{background:var(--amber-lt);border-left:3px solid var(--amber);}
+.insight.green{background:var(--green-lt);border-left:3px solid var(--green);}
+.insight.gold{background:rgba(201,168,76,0.07);border-left:3px solid var(--gold);}
+.insight.blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.insight-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.insight-title{font-size:12.5px;font-weight:600;margin-bottom:2px;}
+.insight.red .insight-title{color:#8C1D1D;}
+.insight.amber .insight-title{color:#8C4010;}
+.insight.green .insight-title{color:#1A6040;}
+.insight.gold .insight-title{color:#8B6914;}
+.insight.blue .insight-title{color:#1A4A7A;}
+.insight-text{font-size:12px;color:var(--dgray);line-height:1.5;}
+
+/* ════ SCORE BAR ════ */
+.score-bar{height:7px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;margin-top:6px;}
+.score-fill{height:100%;border-radius:4px;transition:width .8s ease;}
+.score-fill.critical{background:linear-gradient(to right,#8C1D1D,#C9344C);}
+.score-fill.high{background:linear-gradient(to right,#9B5010,#C98010);}
+.score-fill.medium{background:linear-gradient(to right,#8B7014,#C9A84C);}
+.score-fill.low{background:linear-gradient(to right,#1A7048,#28A060);}
+
+/* ════ RISK BANDS ════ */
+.risk-band{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:7px;margin-bottom:8px;}
+.risk-band.critical{background:rgba(140,29,29,0.12);border:1px solid rgba(201,52,76,0.25);}
+.risk-band.high{background:rgba(184,96,16,0.1);border:1px solid rgba(184,96,16,0.22);}
+.risk-band.medium{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.18);}
+.risk-band.low{background:rgba(26,112,72,0.1);border:1px solid rgba(26,112,72,0.2);}
+.risk-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.risk-band.critical .risk-dot{background:#C9344C;}
+.risk-band.high .risk-dot{background:#C98010;}
+.risk-band.medium .risk-dot{background:var(--gold);}
+.risk-band.low .risk-dot{background:#28A060;}
+.risk-band-body{flex:1;}
+.risk-band-title{font-size:12.5px;font-weight:600;color:#fff;margin-bottom:1px;}
+.risk-band-desc{font-size:11px;color:var(--gray);}
+.risk-band-score{font-family:var(--mono);font-size:17px;color:#fff;}
+
+/* ════ BUTTONS ════ */
+.btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:6px;padding:10px 20px;font-family:var(--body);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s;}
+.btn-gold{background:var(--gold);color:var(--navy);}
+.btn-gold:hover{background:var(--gold-lt);transform:translateY(-1px);}
+.btn-outline{background:transparent;color:var(--gold);border:1px solid rgba(201,168,76,0.4);}
+.btn-outline:hover{background:var(--gold-dim);}
+.btn-ghost{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.08);}
+.btn-ghost:hover{background:rgba(255,255,255,0.08);}
+.btn-danger{background:#7A1818;color:#fff;}
+.btn-danger:hover{background:#8C1D1D;}
+.btn-lg{padding:12px 28px;font-size:13.5px;}
+.btn-sm{padding:6px 14px;font-size:11px;}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
+
+/* ════ TABLE ════ */
+.data-table{width:100%;border-collapse:collapse;}
+.data-table th{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);padding:8px 12px;text-align:left;border-bottom:1px solid rgba(201,168,76,0.12);font-weight:600;}
+.data-table td{padding:10px 12px;font-size:12.5px;color:rgba(255,255,255,0.75);border-bottom:1px solid rgba(255,255,255,0.04);}
+.data-table td.mono{font-family:var(--mono);color:#fff;}
+.data-table td.muted{color:var(--gray);font-size:11.5px;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr.total td{border-top:1px solid rgba(201,168,76,0.15);font-weight:600;padding-top:12px;}
+.data-table tr.total td.mono{color:var(--gold);font-size:15px;}
+
+/* ════ AVATAR BADGE ════ */
+.avatar-badge{display:inline-flex;align-items:center;gap:10px;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.25);border-radius:7px;padding:10px 16px;margin-bottom:16px;}
+.avatar-badge-icon{font-size:20px;}
+.avatar-badge-text{font-size:13px;font-weight:600;color:var(--gold);}
+.avatar-badge-sub{font-size:11px;color:rgba(201,168,76,0.55);margin-top:1px;}
+
+/* ════ CLIENT LIST ════ */
+.client-list{display:flex;flex-direction:column;gap:8px;}
+.client-item{display:flex;align-items:center;gap:14px;background:var(--navy-m);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .15s;}
+.client-item:hover{border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.04);}
+.client-item.active-client{border-color:var(--gold);background:var(--gold-dim2);}
+.ci-avatar{width:38px;height:38px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:15px;font-weight:700;color:var(--gold);flex-shrink:0;}
+.ci-body{flex:1;}
+.ci-name{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
+.ci-meta{font-size:11px;color:var(--gray);}
+.ci-score{font-family:var(--mono);font-size:17px;font-weight:500;}
+.ci-score.good{color:#28A060;}
+.ci-score.ok{color:var(--gold);}
+.ci-score.risk{color:#C98010;}
+.ci-score.danger{color:#C9344C;}
+.ci-actions{display:flex;gap:6px;}
+
+/* ════ PIPELINE STATUS BADGES ════ */
+.status-badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:20px;border:1px solid;}
+.status-new{background:rgba(201,168,76,0.12);border-color:rgba(201,168,76,0.4);color:#C9A84C;}
+.status-booked{background:rgba(41,130,200,0.12);border-color:rgba(41,130,200,0.4);color:#4AADDF;}
+.status-seen{background:rgba(150,80,220,0.12);border-color:rgba(150,80,220,0.4);color:#B07FE8;}
+.status-closed{background:rgba(40,160,96,0.12);border-color:rgba(40,160,96,0.4);color:#28A060;}
+.status-followup{background:rgba(201,52,76,0.12);border-color:rgba(201,52,76,0.4);color:#E05070;}
+
+/* ════ FOLLOW-UP PANEL ════ */
+.followup-card{background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:16px 18px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.followup-name{font-size:13px;font-weight:600;color:#fff;}
+.followup-meta{font-size:11px;color:var(--gray);margin-top:2px;}
+.followup-days{font-family:var(--mono);font-size:20px;font-weight:600;}
+.followup-days.overdue{color:#C9344C;}
+.followup-days.due{color:var(--gold);}
+.followup-days.ok{color:#28A060;}
+
+/* ════ CHART WRAPPERS ════ */
+.chart-wrap{position:relative;padding:8px 0;}
+.chart-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);text-align:center;margin-top:10px;}
+
+/* ════ SCORE DIAL ════ */
+.score-dial-wrap{text-align:center;padding:20px 0 10px;}
+.score-dial-num{font-family:var(--mono);font-size:44px;font-weight:500;color:#fff;line-height:1;}
+.score-dial-label{font-size:11px;color:var(--gray);margin-top:6px;}
+.score-dial-class{font-size:13px;font-weight:600;margin-top:4px;}
+
+/* ════ NOTES BOX ════ */
+.note-box{background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:6px;padding:12px 16px;font-size:12px;color:rgba(255,255,255,0.65);line-height:1.6;margin-top:12px;}
+.note-box strong{color:var(--gold);}
+
+/* ════ SECTION DIVIDER ════ */
+.sec-divider{height:1px;background:rgba(255,255,255,0.05);margin:20px 0;}
+
+/* ════ PRINT STYLES ════ */
+@media print {
+  .sidebar,.topbar,.btn-row,.no-print,.tb-right{display:none!important;}
+  .main{margin-left:0;}
+  .content{padding:0;}
+  body{background:#fff;color:#000;font-size:11px;}
+  .card{background:#fff;border:1px solid #ddd;break-inside:avoid;margin-bottom:14px;padding:16px;}
+  .card-title{color:#000;}
+  .metric-card{background:#f8f8f8;border:1px solid #ddd;}
+  .metric-val,.metric-label{color:#000!important;}
+  .data-table td,.data-table th{color:#000;}
+  .insight{background:#f8f8f8!important;border-left:3px solid #ccc!important;}
+  .insight-title,.insight-text{color:#000!important;}
+  .section-label::after{background:#ccc;}
+  .section-label{color:#666;}
+  .print-only{display:block!important;}
+}
+.print-only{display:none;}
+
+/* ════ BOOK WISDOM TOAST ════ */
+#wisdom-toast{
+  position:fixed;bottom:28px;right:28px;z-index:9000;
+  max-width:340px;
+  background:var(--navy);
+  border:1px solid rgba(201,168,76,0.35);
+  border-left:4px solid var(--gold);
+  border-radius:10px;
+  padding:18px 20px;
+  box-shadow:0 12px 40px rgba(0,0,0,0.5);
+  transform:translateX(400px);
+  transition:transform .4s cubic-bezier(.22,1,.36,1);
+  cursor:pointer;
+}
+#wisdom-toast.show{transform:translateX(0);}
+.wt-label{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.wt-label::before{content:'📖';font-size:12px;}
+.wt-quote{font-family:var(--serif);font-size:15px;font-style:italic;color:#fff;line-height:1.55;margin-bottom:6px;}
+.wt-attr{font-size:10px;color:var(--gray);}
+.wt-close{position:absolute;top:10px;right:12px;background:none;border:none;color:var(--gray);cursor:pointer;font-size:14px;}
+
+/* ════ PRODUCT CARDS ════ */
+.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.prod-card{background:var(--navy-m);border:1px solid rgba(201,168,76,0.1);border-radius:10px;overflow:hidden;transition:border-color .2s,transform .15s;}
+.prod-card:hover{transform:translateY(-2px);}
+.prod-card.lead{border-color:var(--gold);box-shadow:0 0 0 1px rgba(201,168,76,0.15);}
+.prod-card.secondary{border-color:rgba(201,168,76,0.25);}
+.prod-card.not-fit{opacity:0.45;border-color:rgba(255,255,255,0.05);}
+.pc-header{padding:16px 18px 12px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.pc-badge{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:3px;display:inline-block;margin-bottom:8px;}
+.pc-badge.lead{background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);}
+.pc-badge.sec{background:rgba(26,112,72,0.15);color:#28A060;border:1px solid rgba(26,112,72,0.25);}
+.pc-badge.add{background:rgba(26,128,192,0.12);color:#4090C8;border:1px solid rgba(26,128,192,0.25);}
+.pc-badge.no{background:rgba(140,29,29,0.1);color:#C9344C;border:1px solid rgba(140,29,29,0.2);}
+.pc-name{font-family:var(--serif);font-size:17px;font-weight:700;color:#fff;margin-bottom:2px;}
+.pc-insurer{font-size:10px;color:var(--gold);letter-spacing:1px;}
+.pc-body{padding:14px 18px;}
+.pc-why{font-size:12.5px;color:rgba(255,255,255,0.75);line-height:1.6;margin-bottom:12px;}
+.pc-features{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.pc-feat{font-size:11.5px;color:rgba(255,255,255,0.5);display:flex;align-items:flex-start;gap:7px;line-height:1.4;}
+.pc-feat::before{content:"✦";color:var(--gold);font-size:9px;flex-shrink:0;margin-top:2px;}
+.pc-prem{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:9px 12px;}
+.pc-prem-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;}
+.pc-prem-val{font-family:var(--mono);font-size:13px;color:#fff;}
+.pc-watch{display:flex;gap:7px;margin-top:8px;padding:9px 11px;background:rgba(184,96,16,0.08);border-radius:6px;border:1px solid rgba(184,96,16,0.18);font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5;}
+
+/* Tshepo rate table */
+.tshepo-table{width:100%;border-collapse:collapse;margin:8px 0 14px;}
+.tshepo-table th{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;padding:6px 8px;text-align:left;border-bottom:1px solid rgba(201,168,76,0.15);}
+.tshepo-table td{padding:6px 8px;font-size:12px;color:rgba(255,255,255,0.65);border-bottom:1px solid rgba(255,255,255,0.04);font-family:var(--mono);}
+.tshepo-table td:first-child{font-family:var(--body);color:var(--gray);}
+.tshepo-table tr:last-child td{border-bottom:none;}
+
+/* Avatar strategy header */
+.avatar-strategy{display:flex;align-items:flex-start;gap:14px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.18);border-radius:8px;padding:18px 20px;margin-bottom:20px;}
+.as-icon{font-size:28px;flex-shrink:0;}
+.as-title{font-family:var(--serif);font-size:18px;font-weight:700;color:#fff;margin-bottom:3px;}
+.as-sub{font-size:12px;color:var(--gold);margin-bottom:5px;}
+.as-logic{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.55;}
+
+/* Session script box */
+.script-box{background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.12);border-radius:8px;padding:18px 20px;margin-bottom:12px;}
+.script-box-label{font-size:8.5px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px;}
+.script-box-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7;font-style:italic;}
+
+/* ════ MISC ════ */
+.tag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:0.5px;}
+.tag.gold{background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.2);}
+.tag.green{background:var(--green-lt);color:var(--green);}
+.tag.red{background:var(--red-lt);color:var(--red);}
+.tag.amber{background:var(--amber-lt);color:var(--amber);}
+.empty-state{text-align:center;padding:60px 30px;color:var(--gray);}
+.empty-icon{font-size:40px;margin-bottom:12px;opacity:0.4;}
+.empty-text{font-size:13px;line-height:1.6;}
+.dot-sep{color:rgba(255,255,255,0.2);margin:0 6px;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ════ SIDEBAR ════ -->
+<nav class="sidebar">
+  <div class="sb-logo" style="padding:16px 20px 14px;text-align:center;">
+    <img src="data:image/png;base64,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" alt="GWB" style="width:130px;height:auto;border-radius:6px;display:block;margin:0 auto 10px;">
+    <div style="font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;">We Close the Gap — So Your Family Never Pays It</div>
+  </div>
+
+  <div id="sb-client-box" class="sb-client-box" style="display:none;">
+    <div class="sb-client-label">Active Client</div>
+    <div class="sb-client-name" id="sb-client-name">—</div>
+    <div class="sb-client-meta" id="sb-client-meta">—</div>
+    <div class="sb-client-score">
+      <div class="sb-score-val" id="sb-score-val">—</div>
+      <div style="flex:1;">
+        <div class="sb-score-label">Health Score</div>
+        <div class="sb-score-bar"><div class="sb-score-fill" id="sb-score-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-label">Client Management</div>
+    <div class="sb-nav-item active" id="nav-clients" onclick="showPanel('clients',this)">
+      <span class="sb-nav-icon">·</span> Client Database
+    </div>
+    <div class="sb-nav-item" id="nav-profile" onclick="showPanel('profile',this)">
+      <span class="sb-nav-icon">·</span> Client Profile
+    </div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-label">Financial Analysis</div>
+    <div class="sb-nav-item" id="nav-income" onclick="showPanel('income',this)">
+      <span class="sb-nav-icon">·</span> Income Analysis
+    </div>
+    <div class="sb-nav-item" id="nav-expenses" onclick="showPanel('expenses',this)">
+      <span class="sb-nav-icon">·</span> Expense Analysis
+    </div>
+    <div class="sb-nav-item" id="nav-savings" onclick="showPanel('savings',this)">
+      <span class="sb-nav-icon">·</span> Savings &amp; Investments
+    </div>
+    <div class="sb-nav-item" id="nav-debt" onclick="showPanel('debt',this)">
+      <span class="sb-nav-icon">·</span> Debt Analysis
+    </div>
+    <div class="sb-nav-item" id="nav-assets" onclick="showPanel('assets',this)">
+      <span class="sb-nav-icon">·</span> Assets
+    </div>
+    <div class="sb-nav-item" id="nav-insurance" onclick="showPanel('insurance',this)">
+      <span class="sb-nav-icon">·</span> Insurance &amp; Protection
+    </div>
+    <div class="sb-nav-item" id="nav-retirement" onclick="showPanel('retirement',this)">
+      <span class="sb-nav-icon">·</span> Retirement Planning
+    </div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-label">Advisor Tools</div>
+    <div class="sb-nav-item" id="nav-pipeline" onclick="showPanel('pipeline',this)">
+      <span class="sb-nav-icon">·</span> Pipeline
+    </div>
+    <div class="sb-nav-item" id="nav-dashboard" onclick="showPanel('dashboard',this)">
+      <span class="sb-nav-icon">·</span> Dashboard
+    </div>
+    <div class="sb-nav-item" id="nav-gap" onclick="showPanel('gap',this)">
+      <span class="sb-nav-icon">·</span> Gap Analysis
+    </div>
+    <div class="sb-nav-item" id="nav-score" onclick="showPanel('score',this)">
+      <span class="sb-nav-icon">·</span> Health Score
+    </div>
+    <div class="sb-nav-item" id="nav-report" onclick="showPanel('report',this)">
+      <span class="sb-nav-icon">·</span> Report Generator
+    </div>
+    <div class="sb-nav-item" id="nav-products" onclick="showPanel('products',this)">
+      <span class="sb-nav-icon">·</span> Product Recommendations
+    </div>
+  </div>
+
+  <div class="sb-footer">
+    <div class="sb-footer-text">Family Wealth Gap Assessment<br>Generational Wealth Builders<br>Thabo Davis Mosemele · +267 73836646</div>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
+<div class="main">
+  <div class="topbar">
+    <div class="tb-left">
+      <div>
+        <div class="tb-page-title" id="tb-title">Client Database</div>
+        <div class="tb-status" id="tb-status">No active client</div>
+      </div>
+    </div>
+    <div class="tb-right no-print">
+      <button class="tb-btn tb-btn-ghost" onclick="newClient()">+ New Client</button>
+      <button class="tb-btn tb-btn-ghost" onclick="saveClient()">Save</button>
+      <button class="tb-btn tb-btn-gold" onclick="runFullAnalysis()">Run Analysis</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ════ PANEL: CLIENT DATABASE ════ -->
+    <div class="panel active" id="panel-clients">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <div>
+          <div style="font-family:var(--serif);font-size:22px;font-weight:700;color:#fff;">Client Database</div>
+          <div style="font-size:12px;color:var(--gray);margin-top:2px;">Manage and access all client profiles</div>
+        </div>
+        <button class="btn btn-gold" onclick="newClient()">+ New Client</button>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:20px;">
+        <div class="card" style="padding:20px;margin-bottom:0;">
+          <div class="section-label">Quick Stats</div>
+          <div class="grid-4">
+            <div><div style="font-family:var(--mono);font-size:24px;color:#fff;" id="stat-total-clients">0</div><div style="font-size:11px;color:var(--gray);">Total Clients</div></div>
+            <div><div style="font-family:var(--mono);font-size:24px;color:#28A060;" id="stat-healthy">0</div><div style="font-size:11px;color:var(--gray);">Healthy</div></div>
+            <div><div style="font-family:var(--mono);font-size:24px;color:var(--gold);" id="stat-review">0</div><div style="font-size:11px;color:var(--gray);">Needs Review</div></div>
+            <div><div style="font-family:var(--mono);font-size:24px;color:#C9344C;" id="stat-critical">0</div><div style="font-size:11px;color:var(--gray);">Critical</div></div>
+            <div><div style="font-family:var(--mono);font-size:24px;color:#E05070;" id="stat-followup">0</div><div style="font-size:11px;color:var(--gray);">Follow-up Due</div></div>
+          </div>
+        </div>
+        <div class="card" style="padding:20px;margin-bottom:0;">
+          <div class="section-label">Search Clients</div>
+          <input class="f-input" id="client-search" placeholder="Search by name, avatar, score…" oninput="filterClients(this.value)" style="margin-bottom:0;">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="client-list" id="client-list">
+          <div class="empty-state">
+            <div class="empty-icon">·</div>
+            <div class="empty-text">No clients yet.<br>Click <strong>+ New Client</strong> to get started.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: CLIENT PROFILE ════ -->
+    <div class="panel" id="panel-profile">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Client Profile</div>
+          <div class="card-sub">Personal information and demographic details</div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label class="f-label">Full Name</label>
+            <input class="f-input" id="p_name" placeholder="Client full name" oninput="updateSidebar()">
+          </div>
+          <div class="form-group">
+            <label class="f-label">Age</label>
+            <input class="f-input" id="p_age" type="number" placeholder="35" oninput="updateSidebar()">
+          </div>
+          <div class="form-group">
+            <label class="f-label">Expected Retirement Age</label>
+            <input class="f-input" id="p_retire_age" type="number" placeholder="65">
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label class="f-label">WhatsApp Number</label>
+            <div class="f-prefix"><span class="f-prefix-symbol">+</span><input class="f-input" id="p_whatsapp" type="tel" placeholder="267 7X XXX XXX"></div>
+          </div>
+          <div class="form-group">
+            <label class="f-label">Email Address <span class="opt">(optional)</span></label>
+            <input class="f-input" id="p_email" type="email" placeholder="client@email.com">
+          </div>
+          <div class="form-group">
+            <label class="f-label">Source</label>
+            <select class="f-select" id="p_source">
+              <option value="">Select…</option>
+              <option value="intake_form">Intake Form</option>
+              <option value="referral">Referral</option>
+              <option value="walk_in">Walk-in</option>
+              <option value="social_media">Social Media</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label class="f-label">Pipeline Status</label>
+            <select class="f-select" id="p_pipeline_status">
+              <option value="new">🟡 New Lead</option>
+              <option value="booked">🔵 Session Booked</option>
+              <option value="seen">🟣 Session Done</option>
+              <option value="closed">🟢 Closed</option>
+              <option value="followup">🔴 Follow-up Needed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="f-label">Session Date</label>
+            <input class="f-input" id="p_session_date" type="date">
+          </div>
+          <div class="form-group">
+            <label class="f-label">Follow-up Date</label>
+            <input class="f-input" id="p_followup_date" type="date">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="f-label">Follow-up Notes</label>
+          <textarea class="f-textarea" id="p_followup_notes" placeholder="What needs to happen next? What did you promise? What is the client thinking about?…" style="min-height:60px;"></textarea>
+        </div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label class="f-label">Marital Status</label>
+            <select class="f-select" id="p_marital">
+              <option value="">Select…</option>
+              <option value="single">Single</option>
+              <option value="married">Married / Life Partner</option>
+              <option value="divorced">Divorced</option>
+              <option value="widowed">Widowed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="f-label">Number of Dependents</label>
+            <input class="f-input" id="p_dependents" type="number" placeholder="0" min="0">
+          </div>
+          <div class="form-group">
+            <label class="f-label">Age of Youngest Dependent</label>
+            <input class="f-input" id="p_youngest" type="number" placeholder="e.g. 5">
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label class="f-label">Employment Type</label>
+            <select class="f-select" id="p_emp">
+              <option value="">Select…</option>
+              <option value="employed">Employed (salaried)</option>
+              <option value="self_employed">Self-employed</option>
+              <option value="business_owner">Business owner</option>
+              <option value="contractor">Contractor / Freelance</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="f-label">Spouse / Partner Income</label>
+            <select class="f-select" id="p_spouse_income" onchange="toggleSpouseIncome()">
+              <option value="">Select…</option>
+              <option value="none">None / Not applicable</option>
+              <option value="partial">Partial — less than client</option>
+              <option value="equal">Similar to client</option>
+              <option value="full">Full independent income</option>
+            </select>
+          </div>
+          <div class="form-group" id="spouse-income-field" style="display:none;">
+            <label class="f-label">Spouse Monthly Salary (net) <span class="opt">(optional)</span></label>
+            <div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="p_spouse_salary" type="number" placeholder="0"></div>
+            <div class="f-hint">Enter the partner's take-home monthly pay if known — used in household income and gap calculations.</div>
+          </div>
+          <div class="form-group">
+            <label class="f-label">Has Valid Will?</label>
+            <select class="f-select" id="p_will">
+              <option value="">Select…</option>
+              <option value="yes">Yes — up to date</option>
+              <option value="outdated">Yes — but outdated</option>
+              <option value="no">No</option>
+              <option value="unsure">Unsure</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label class="f-label">Health Status</label>
+            <select class="f-select" id="p_health">
+              <option value="">Select…</option>
+              <option value="excellent">Excellent</option>
+              <option value="good">Good</option>
+              <option value="managed">Managed condition(s)</option>
+              <option value="complex">Complex / Multiple conditions</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="f-label">Smoker?</label>
+            <select class="f-select" id="p_smoker">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+              <option value="ex">Ex-smoker (12+ months)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="f-label">Business Owner?</label>
+            <select class="f-select" id="p_business">
+              <option value="no">No</option>
+              <option value="yes_side">Yes — side business</option>
+              <option value="yes_primary">Yes — primary income source</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="f-label">Notes / Session Context</label>
+          <textarea class="f-textarea" id="p_notes" placeholder="Why is the client here? What triggered this session? Key concerns…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: INCOME ════ -->
+    <div class="panel" id="panel-income">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Income Analysis</div>
+          <div class="card-sub">All monthly income sources — used for cashflow, gap, and retirement calculations</div>
+        </div>
+        <div class="section-label">Primary Income</div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label class="f-label">Client Monthly Salary (net)</label>
+            <div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="i_salary" type="number" placeholder="0" oninput="calcIncome()"></div>
+          </div>
+          <div class="form-group">
+            <label class="f-label">Business Income</label>
+            <div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="i_business" type="number" placeholder="0" oninput="calcIncome()"></div>
+          </div>
+          <div class="form-group">
+            <label class="f-label">Side / Part-time Income</label>
+            <div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="i_side" type="number" placeholder="0" oninput="calcIncome()"></div>
+          </div>
+        </div>
+        <div id="spouse-income-income-panel" style="display:none;">
+          <div class="section-label">Spouse / Partner Income</div>
+          <div class="grid-3">
+            <div class="form-group">
+              <label class="f-label">Spouse Monthly Salary (net)</label>
+              <div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="i_spouse_salary" type="number" placeholder="0" oninput="calcIncome()"></div>
+              <div class="f-hint">Pulled from Client Profile. Edit there to update.</div>
+            </div>
+            <div class="form-group">
+              <label class="f-label">Spouse Other Income</label>
+              <div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="i_spouse_other" type="number" placeholder="0" oninput="calcIncome()"></div>
+            </div>
+          </div>
+        </div>
+        <div class="section-label">Passive &amp; Other Income</div>
+        <div class="grid-3">
+          <div class="form-group">
+            <label class="f-label">Rental Income</label>
+            <div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="i_rental" type="number" placeholder="0" oninput="calcIncome()"></div>
+          </div>
+          <div class="form-group">
+            <label class="f-label">Investment / Dividend Income</label>
+            <div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="i_investment" type="number" placeholder="0" oninput="calcIncome()"></div>
+          </div>
+          <div class="form-group">
+            <label class="f-label">Other Monthly Income</label>
+            <div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="i_other" type="number" placeholder="0" oninput="calcIncome()"></div>
+          </div>
+        </div>
+        <div class="sec-divider"></div>
+        <div class="grid-3" id="income-summary-cards"></div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: EXPENSES ════ -->
+    <div class="panel" id="panel-expenses">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Expense Analysis</div>
+          <div class="card-sub">Monthly household and personal expenses</div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <div class="section-label">Housing &amp; Utilities</div>
+            <div class="form-group"><label class="f-label">Rent / Bond</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="e_housing" type="number" placeholder="0" oninput="calcExpenses()"></div></div>
+            <div class="form-group"><label class="f-label">Electricity &amp; Water</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="e_utilities" type="number" placeholder="0" oninput="calcExpenses()"></div></div>
+            <div class="form-group"><label class="f-label">Groceries &amp; Food</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="e_food" type="number" placeholder="0" oninput="calcExpenses()"></div></div>
+            <div class="form-group"><label class="f-label">Transport (fuel, public)</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="e_transport" type="number" placeholder="0" oninput="calcExpenses()"></div></div>
+          </div>
+          <div>
+            <div class="section-label">Protection &amp; Education</div>
+            <div class="form-group"><label class="f-label">School Fees</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="e_school" type="number" placeholder="0" oninput="calcExpenses()"></div></div>
+            <div class="form-group"><label class="f-label">Insurance Premiums</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="e_insurance" type="number" placeholder="0" oninput="calcExpenses()"></div></div>
+            <div class="form-group"><label class="f-label">Funeral Cover</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="e_funeral" type="number" placeholder="0" oninput="calcExpenses()"></div></div>
+            <div class="form-group"><label class="f-label">Medical Aid</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="e_medical" type="number" placeholder="0" oninput="calcExpenses()"></div></div>
+          </div>
+        </div>
+        <div class="section-label">Other Expenses</div>
+        <div class="grid-3">
+          <div class="form-group"><label class="f-label">Entertainment / Lifestyle</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="e_lifestyle" type="number" placeholder="0" oninput="calcExpenses()"></div></div>
+          <div class="form-group"><label class="f-label">Family Support (remittances)</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="e_remittance" type="number" placeholder="0" oninput="calcExpenses()"></div></div>
+          <div class="form-group"><label class="f-label">Other Monthly Expenses</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="e_other" type="number" placeholder="0" oninput="calcExpenses()"></div></div>
+        </div>
+        <div class="sec-divider"></div>
+        <div id="expense-summary-cards"></div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: SAVINGS ════ -->
+    <div class="panel" id="panel-savings">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Savings &amp; Investments</div>
+          <div class="card-sub">Liquidity, investment portfolio, and savings capacity</div>
+        </div>
+        <div class="section-label">Liquid Savings</div>
+        <div class="grid-3">
+          <div class="form-group"><label class="f-label">Monthly Savings</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="s_monthly" type="number" placeholder="0" oninput="calcSavings()"></div></div>
+          <div class="form-group"><label class="f-label">Emergency Fund (total)</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="s_emergency" type="number" placeholder="0" oninput="calcSavings()"></div></div>
+          <div class="form-group"><label class="f-label">Cash Savings / Bank</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="s_cash" type="number" placeholder="0" oninput="calcSavings()"></div></div>
+        </div>
+        <div class="section-label">Investments</div>
+        <div class="grid-3">
+          <div class="form-group"><label class="f-label">Monthly Investment Contribution</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="s_invest_monthly" type="number" placeholder="0" oninput="calcSavings()"></div></div>
+          <div class="form-group"><label class="f-label">Investment Portfolio (current value)</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="s_portfolio" type="number" placeholder="0" oninput="calcSavings()"></div></div>
+          <div class="form-group"><label class="f-label">Unit Trusts / Shares</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="s_shares" type="number" placeholder="0" oninput="calcSavings()"></div></div>
+        </div>
+        <div class="sec-divider"></div>
+        <div class="grid-3" id="savings-summary-cards"></div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: DEBT ════ -->
+    <div class="panel" id="panel-debt">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Debt Analysis</div>
+          <div class="card-sub">Outstanding liabilities and monthly debt obligations</div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <div class="section-label">Secured Debt</div>
+            <div class="form-group"><label class="f-label">Mortgage / Home Loan (outstanding)</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="d_mortgage" type="number" placeholder="0" oninput="calcDebt()"></div></div>
+            <div class="form-group"><label class="f-label">Vehicle Loan (outstanding)</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="d_vehicle" type="number" placeholder="0" oninput="calcDebt()"></div></div>
+          </div>
+          <div>
+            <div class="section-label">Unsecured Debt</div>
+            <div class="form-group"><label class="f-label">Personal Loan(s)</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="d_personal" type="number" placeholder="0" oninput="calcDebt()"></div></div>
+            <div class="form-group"><label class="f-label">Credit Cards (total balance)</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="d_credit" type="number" placeholder="0" oninput="calcDebt()"></div></div>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group"><label class="f-label">Business Loan</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="d_business" type="number" placeholder="0" oninput="calcDebt()"></div></div>
+          <div class="form-group"><label class="f-label">Other Debts</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="d_other" type="number" placeholder="0" oninput="calcDebt()"></div></div>
+          <div class="form-group"><label class="f-label">Total Monthly Debt Payments</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="d_monthly_payment" type="number" placeholder="0" oninput="calcDebt()"></div></div>
+        </div>
+        <div class="sec-divider"></div>
+        <div class="grid-3" id="debt-summary-cards"></div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: ASSETS ════ -->
+    <div class="panel" id="panel-assets">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Assets</div>
+          <div class="card-sub">Total asset base for net worth calculation</div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group"><label class="f-label">Cash &amp; Bank Accounts</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="a_cash" type="number" placeholder="0" oninput="calcAssets()"></div></div>
+          <div class="form-group"><label class="f-label">Primary Property (value)</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="a_property_primary" type="number" placeholder="0" oninput="calcAssets()"></div></div>
+          <div class="form-group"><label class="f-label">Investment Properties</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="a_property_inv" type="number" placeholder="0" oninput="calcAssets()"></div></div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group"><label class="f-label">Vehicles (total value)</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="a_vehicles" type="number" placeholder="0" oninput="calcAssets()"></div></div>
+          <div class="form-group"><label class="f-label">Business Valuation</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="a_business" type="number" placeholder="0" oninput="calcAssets()"></div></div>
+          <div class="form-group"><label class="f-label">Investments &amp; Portfolio</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="a_investments" type="number" placeholder="0" oninput="calcAssets()"></div></div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group"><label class="f-label">Retirement Fund (current)</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="a_retirement" type="number" placeholder="0" oninput="calcAssets()"></div></div>
+          <div class="form-group"><label class="f-label">Other Assets</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="a_other" type="number" placeholder="0" oninput="calcAssets()"></div></div>
+        </div>
+        <div class="sec-divider"></div>
+        <div class="grid-3" id="assets-summary-cards"></div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: INSURANCE ════ -->
+    <div class="panel" id="panel-insurance">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Insurance &amp; Protection</div>
+          <div class="card-sub">Current protection coverage — used for gap analysis</div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <div class="section-label">Life Cover</div>
+            <div class="form-group"><label class="f-label">Life Insurance Sum Assured</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="ins_life" type="number" placeholder="0" oninput="calcInsurance()"></div></div>
+            <div class="form-group"><label class="f-label">Status</label>
+              <select class="f-select" id="ins_life_status">
+                <option value="none">No life cover</option>
+                <option value="employer">Employer-provided only</option>
+                <option value="private">Private policy</option>
+                <option value="both">Both employer + private</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Other Cover</div>
+            <div class="form-group"><label class="f-label">Funeral Cover Sum Assured</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="ins_funeral" type="number" placeholder="0" oninput="calcInsurance()"></div></div>
+            <div class="form-group"><label class="f-label">Disability Cover Sum Assured</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="ins_disability" type="number" placeholder="0" oninput="calcInsurance()"></div></div>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group"><label class="f-label">Critical Illness Cover</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="ins_critical" type="number" placeholder="0" oninput="calcInsurance()"></div></div>
+          <div class="form-group"><label class="f-label">Medical Aid (monthly premium)</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="ins_medical" type="number" placeholder="0" oninput="calcInsurance()"></div></div>
+          <div class="form-group"><label class="f-label">Total Monthly Insurance Premium</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="ins_premium_total" type="number" placeholder="0" oninput="calcInsurance()"></div></div>
+        </div>
+        <div class="sec-divider"></div>
+        <div id="insurance-summary-cards"></div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: RETIREMENT ════ -->
+    <div class="panel" id="panel-retirement">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Retirement Planning</div>
+          <div class="card-sub">Retirement savings projections and gap analysis</div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group"><label class="f-label">Current Retirement Savings</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="r_current" type="number" placeholder="0" oninput="calcRetirement()"></div></div>
+          <div class="form-group"><label class="f-label">Monthly Retirement Contribution</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="r_monthly" type="number" placeholder="0" oninput="calcRetirement()"></div></div>
+          <div class="form-group"><label class="f-label">Target Retirement Fund</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="r_target" type="number" placeholder="0" oninput="calcRetirement()"></div></div>
+        </div>
+        <div class="grid-3">
+          <div class="form-group"><label class="f-label">Expected Investment Return (%)</label><input class="f-input" id="r_return" type="number" placeholder="8" min="1" max="20" oninput="calcRetirement()"><div class="f-hint">Annual rate — typical range 7–12%</div></div>
+          <div class="form-group"><label class="f-label">Desired Monthly Income at Retirement</label><div class="f-prefix"><span class="f-prefix-symbol">P</span><input class="f-input" id="r_desired_income" type="number" placeholder="0" oninput="calcRetirement()"></div></div>
+          <div class="form-group"><label class="f-label">Inflation Rate (%)</label><input class="f-input" id="r_inflation" type="number" placeholder="5" min="1" max="15" oninput="calcRetirement()"><div class="f-hint">Default: 5% for Botswana</div></div>
+        </div>
+        <div class="sec-divider"></div>
+        <div class="grid-3" id="retirement-summary-cards"></div>
+        <div class="sec-divider"></div>
+        <div class="section-label">Retirement Projection Chart</div>
+        <div class="chart-wrap" style="max-width:800px;">
+          <canvas id="retirement-chart" height="280"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: DASHBOARD ════ -->
+    <div class="panel" id="panel-dashboard">
+      <div id="dashboard-content">
+        <div class="empty-state">
+          <div class="empty-icon">·</div>
+          <div class="empty-text">Run the full analysis to populate the dashboard.<br>Click <strong>Run Analysis</strong> in the top right.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: PIPELINE ════ -->
+<div class="panel" id="panel-pipeline">
+  <div style="margin-bottom:20px;">
+    <div style="font-family:var(--serif);font-size:22px;font-weight:700;color:#fff;">Client Pipeline</div>
+    <div style="font-size:12px;color:var(--gray);margin-top:2px;">Track every client from first contact to closed deal</div>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:24px;">
+    <div class="card" style="padding:16px;margin-bottom:0;border-top:3px solid var(--gold);">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">New Leads</div>
+      <div style="font-family:var(--mono);font-size:28px;color:#fff;" id="pipe-new">0</div>
+    </div>
+    <div class="card" style="padding:16px;margin-bottom:0;border-top:3px solid #4AADDF;">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4AADDF;margin-bottom:6px;">Session Booked</div>
+      <div style="font-family:var(--mono);font-size:28px;color:#fff;" id="pipe-booked">0</div>
+    </div>
+    <div class="card" style="padding:16px;margin-bottom:0;border-top:3px solid #B07FE8;">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#B07FE8;margin-bottom:6px;">Session Done</div>
+      <div style="font-family:var(--mono);font-size:28px;color:#fff;" id="pipe-seen">0</div>
+    </div>
+    <div class="card" style="padding:16px;margin-bottom:0;border-top:3px solid #28A060;">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#28A060;margin-bottom:6px;">Closed</div>
+      <div style="font-family:var(--mono);font-size:28px;color:#fff;" id="pipe-closed">0</div>
+    </div>
+  </div>
+
+  <!-- Follow-ups due -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="section-label" style="margin-bottom:12px;">🔔 Follow-ups Due</div>
+    <div id="followup-list"><div style="color:var(--gray);font-size:13px;">No follow-ups pending.</div></div>
+  </div>
+
+  <!-- Full pipeline list -->
+  <div class="card">
+    <div class="section-label" style="margin-bottom:12px;">All Clients by Stage</div>
+    <div id="pipeline-list"></div>
+  </div>
+</div>
+
+<!-- ════ PANEL: GAP ANALYSIS ════ -->
+    <div class="panel" id="panel-gap">
+      <div id="gap-content">
+        <div class="empty-state">
+          <div class="empty-icon">·</div>
+          <div class="empty-text">Run the full analysis to see the protection gap.<br>Click <strong>Run Analysis</strong> in the top right.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: HEALTH SCORE ════ -->
+    <div class="panel" id="panel-score">
+      <div id="score-content">
+        <div class="empty-state">
+          <div class="empty-icon">·</div>
+          <div class="empty-text">Run the full analysis to generate the health score.<br>Click <strong>Run Analysis</strong> in the top right.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: REPORT ════ -->
+    <div class="panel" id="panel-report">
+      <div id="report-content">
+        <div class="empty-state">
+          <div class="empty-icon">·</div>
+          <div class="empty-text">Run the full analysis first, then the report will be available here.<br>Click <strong>Run Analysis</strong> in the top right.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PANEL: PRODUCT RECOMMENDATIONS ════ -->
+    <div class="panel" id="panel-products">
+      <div id="products-content">
+        <div class="empty-state">
+          <div class="empty-icon">·</div>
+          <div class="empty-text">Run the full analysis first, then product recommendations will appear here.<br>Click <strong>Run Analysis</strong> in the top right.</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ════ PANEL: SESSION CALENDAR ════ -->
+    <div class="panel" id="panel-calendar">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Session Calendar</div>
+          <div class="card-sub">All upcoming and past sessions — auto-populated from client intake forms and profile updates. Click any session to load that client.</div>
+        </div>
+        <div id="calendar-container">
+          <div id="cal-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <button class="tb-btn tb-btn-ghost" onclick="calNav(-1)">← Previous</button>
+            <div id="cal-month-label" style="font-family:var(--serif);font-size:22px;font-weight:700;color:#fff;"></div>
+            <button class="tb-btn tb-btn-ghost" onclick="calNav(1)">Next →</button>
+          </div>
+          <!-- Day-of-week headers -->
+          <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;"></div>
+          <!-- Upcoming sessions list -->
+          <div style="margin-top:28px;">
+            <div class="section-label">Upcoming Sessions</div>
+            <div id="upcoming-sessions-list"></div>
+          </div>
+          <!-- Past sessions list -->
+          <div style="margin-top:20px;">
+            <div class="section-label">Past Sessions This Month</div>
+            <div id="past-sessions-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ════ BOOK WISDOM TOAST ════ -->
+<div id="wisdom-toast" onclick="dismissWisdom()">
+  <button class="wt-close" onclick="event.stopPropagation();dismissWisdom()">✕</button>
+  <div class="wt-label">From the Book</div>
+  <div class="wt-quote" id="wt-quote"></div>
+  <div class="wt-attr" id="wt-attr"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  GWB FINANCIAL PLANNING PLATFORM
+//  All currency in Botswana Pula (BWP)
+//  Thabo Davis Mosemele | Generational Wealth Builders
+// ══════════════════════════════════════════════════════════════
+
+// ── GOOGLE SHEETS CONFIG ──────────────────────────────────────
+// After deploying your Apps Script, paste the Web App URL below
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxnGraYY8isI4tmWOqfxLLXT4VKMSrMFGm6LwuAWbt_zhScEvFmlCDNSRmshyzbwEWkDA/exec';
+const SHEETS_KEY = 'GWB2025'; // Must match SECRET_KEY in Apps Script // Must match SECRET_KEY in Apps Script
+
+// ── STATE ────────────────────────────────────────────────────
+let clientDB = [];
+let activeClientId = null;
+let analysisRun = false;
+let charts = {};
+let syncStatus = 'idle'; // idle | saving | loading | error
+
+// ── SHEETS API ───────────────────────────────────────────────
+async function sheetsPost(payload) {
+  const res = await fetch(SHEETS_URL, {
+    method: 'POST',
+    body: JSON.stringify({ ...payload, key: SHEETS_KEY }),
+    headers: { 'Content-Type': 'text/plain' },
+    redirect: 'follow'
+  });
+  const text = await res.text();
+  try { return JSON.parse(text); } catch(e) { throw new Error('Bad server response: ' + text.substring(0,100)); }
+}
+
+function setSyncStatus(status, msg) {
+  syncStatus = status;
+  const el = document.getElementById('tb-status');
+  if (!el) return;
+  const icons = { saving:'Saving…', loading:'Loading…', ok: msg || 'Saved', error: msg || 'Sync error' };
+  el.textContent = icons[status] || msg || '';
+  el.style.color = status === 'error' ? 'var(--red)' : status === 'ok' ? 'var(--green)' : 'var(--gray)';
+  if (status === 'ok') setTimeout(() => { el.textContent = activeClientId ? 'Active: ' + (clientDB.find(c=>c.id===activeClientId)?.profile?.name || 'Client') : ''; el.style.color=''; }, 2500);
+}
+
+async function loadAllFromSheets() {
+  setSyncStatus('loading');
+  try {
+    const res = await sheetsPost({ action: 'loadAll' });
+    if (res.success) {
+      clientDB = res.clients || [];
+      renderClientList();
+      setSyncStatus('ok', `Loaded ${clientDB.length} client${clientDB.length!==1?'s':''}`);
+    } else {
+      setSyncStatus('error', res.error || 'Load failed');
+    }
+  } catch (e) {
+    setSyncStatus('error', 'Cannot reach server');
+    console.error('Sheets load error:', e);
+  }
+}
+
+async function saveClientToSheets(client) {
+  setSyncStatus('saving');
+  try {
+    const res = await sheetsPost({ action: 'save', client });
+    if (res.success) {
+      setSyncStatus('ok', '✓ Saved — ' + (client.profile?.name || 'Client'));
+    } else {
+      setSyncStatus('error', res.error || 'Save failed');
+    }
+  } catch (e) {
+    setSyncStatus('error', 'Save failed — check connection');
+    console.error('Sheets save error:', e);
+  }
+}
+
+async function deleteClientFromSheets(id) {
+  // proceed with delete
+  try {
+    await sheetsPost({ action: 'delete', id });
+  } catch (e) {
+    console.error('Sheets delete error:', e);
+  }
+}
+
+function showSetupBanner() {
+  const existing = document.getElementById('setup-banner');
+  if (existing) return;
+  const banner = document.createElement('div');
+  banner.id = 'setup-banner';
+  banner.style.cssText = 'position:fixed;top:58px;left:260px;right:0;background:#8C1D1D;color:#fff;padding:10px 24px;font-size:12px;z-index:999;display:flex;align-items:center;gap:12px;';
+  banner.innerHTML = `<strong>Setup required:</strong> Paste your Google Apps Script URL into the SHEETS_URL variable in the HTML file to enable cloud sync. <button onclick="this.parentElement.remove()" style="margin-left:auto;background:rgba(255,255,255,0.2);border:none;color:#fff;padding:4px 10px;border-radius:4px;cursor:pointer;">Dismiss</button>`;
+  document.body.appendChild(banner);
+}
+
+// ── HELPERS ──────────────────────────────────────────────────
+const P = n => 'P' + Math.round(n).toLocaleString();
+const pct = n => (n * 100).toFixed(1) + '%';
+const gv = id => parseFloat(document.getElementById(id)?.value) || 0;
+const gs = id => document.getElementById(id)?.value || '';
+const gr = name => document.querySelector(`input[name="${name}"]:checked`)?.value || '';
+const setV = (id, v) => { if(document.getElementById(id)) document.getElementById(id).value = v||''; };
+const setS = (id, v) => { if(document.getElementById(id)) document.getElementById(id).value = v||''; };
+
+// ── NAVIGATION ───────────────────────────────────────────────
+function showPanel(id, el) {
+  if (id === 'pipeline') renderPipeline();
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = {
+    clients:'Client Database', profile:'Client Profile', income:'Income Analysis',
+    expenses:'Expense Analysis', savings:'Savings & Investments', debt:'Debt Analysis',
+    assets:'Assets', insurance:'Insurance & Protection', retirement:'Retirement Planning',
+    dashboard:'Financial Dashboard', gap:'Gap Analysis', score:'Financial Health Score',
+    calendar:'Session Calendar', report:'Report Generator'
+  };
+  document.getElementById('tb-title').textContent = titles[id] || id;
+}
+
+// ── CLIENT MANAGEMENT ────────────────────────────────────────
+function newClient() {
+  const id = 'c_' + Date.now();
+  const client = {
+    id, created: new Date().toLocaleDateString(),
+    profile:{}, income:{}, expenses:{}, savings:{}, debt:{}, assets:{}, insurance:{}, retirement:{},
+    analysis: null
+  };
+  clientDB.push(client);
+  activeClientId = id;
+  saveClientToSheets(client);
+  clearForm();
+  renderClientList();
+  showPanel('profile', document.getElementById('nav-profile'));
+  document.getElementById('tb-status').textContent = 'New client — fill in details';
+}
+
+function loadClient(id) {
+  const c = clientDB.find(x => x.id === id);
+  if (!c) return;
+  activeClientId = id;
+  populateForm(c);
+  renderClientList();
+  updateSidebar();
+  if (c.analysis) {
+    analysisRun = true;
+    renderAll(c.analysis);
+  }
+  showPanel('profile', document.getElementById('nav-profile'));
+  document.getElementById('tb-status').textContent = 'Active: ' + (c.profile.name || 'Unnamed Client');
+}
+
+function deleteClient(id) {
+  if (!confirm('Delete this client permanently?')) return;
+  clientDB = clientDB.filter(x => x.id !== id);
+  if (activeClientId === id) { activeClientId = null; clearForm(); }
+  deleteClientFromSheets(id);
+  renderClientList();
+}
+
+function saveClient() {
+  if (!activeClientId) { alert('No active client. Create a new client first.'); return; }
+  const c = clientDB.find(x => x.id === activeClientId);
+  if (!c) return;
+  c.profile = { name:gs('p_name'), age:gv('p_age'), retire_age:gv('p_retire_age'), marital:gs('p_marital'), dependents:gv('p_dependents'), youngest:gv('p_youngest'), emp:gs('p_emp'), spouse_income:gs('p_spouse_income'), spouse_salary:gv('p_spouse_salary'), will:gs('p_will'), health:gs('p_health'), smoker:gs('p_smoker'), business:gs('p_business'), notes:gs('p_notes'), whatsapp:gs('p_whatsapp'), email:gs('p_email'), source:gs('p_source'), pipeline_status:gs('p_pipeline_status'), session_date:gs('p_session_date'), followup_date:gs('p_followup_date'), followup_notes:gs('p_followup_notes') };
+  c.income = { salary:gv('i_salary'), business:gv('i_business'), side:gv('i_side'), rental:gv('i_rental'), investment:gv('i_investment'), other:gv('i_other') };
+  c.expenses = { housing:gv('e_housing'), utilities:gv('e_utilities'), food:gv('e_food'), transport:gv('e_transport'), school:gv('e_school'), insurance:gv('e_insurance'), funeral:gv('e_funeral'), medical:gv('e_medical'), lifestyle:gv('e_lifestyle'), remittance:gv('e_remittance'), other:gv('e_other') };
+  c.savings = { monthly:gv('s_monthly'), emergency:gv('s_emergency'), cash:gv('s_cash'), invest_monthly:gv('s_invest_monthly'), portfolio:gv('s_portfolio'), shares:gv('s_shares') };
+  c.debt = { mortgage:gv('d_mortgage'), vehicle:gv('d_vehicle'), personal:gv('d_personal'), credit:gv('d_credit'), business:gv('d_business'), other:gv('d_other'), monthly_payment:gv('d_monthly_payment') };
+  c.assets = { cash:gv('a_cash'), property_primary:gv('a_property_primary'), property_inv:gv('a_property_inv'), vehicles:gv('a_vehicles'), business:gv('a_business'), investments:gv('a_investments'), retirement:gv('a_retirement'), other:gv('a_other') };
+  c.insurance = { life:gv('ins_life'), life_status:gs('ins_life_status'), funeral:gv('ins_funeral'), disability:gv('ins_disability'), critical:gv('ins_critical'), medical:gv('ins_medical'), premium_total:gv('ins_premium_total') };
+  c.retirement = { current:gv('r_current'), monthly:gv('r_monthly'), target:gv('r_target'), return_rate:gv('r_return'), desired_income:gv('r_desired_income'), inflation:gv('r_inflation') };
+  saveClientToSheets(c);
+  renderClientList();
+}
+
+function clearForm() {
+  document.querySelectorAll('.f-input,.f-select,.f-textarea').forEach(el => el.value = '');
+  updateSidebar();
+  analysisRun = false;
+}
+
+function populateForm(c) {
+  const p = c.profile || {};
+  setV('p_name', p.name); setV('p_age', p.age); setV('p_retire_age', p.retire_age);
+  setV('p_whatsapp', p.whatsapp); setV('p_email', p.email); setS('p_source', p.source);
+  setS('p_pipeline_status', p.pipeline_status || 'new'); setV('p_session_date', p.session_date); setV('p_followup_date', p.followup_date); setV('p_followup_notes', p.followup_notes);
+  setS('p_marital', p.marital); setV('p_dependents', p.dependents); setV('p_youngest', p.youngest);
+  setS('p_emp', p.emp); setS('p_spouse_income', p.spouse_income); setS('p_will', p.will);
+  setV('p_spouse_salary', p.spouse_salary);
+  setS('p_health', p.health); setS('p_smoker', p.smoker); setS('p_business', p.business);
+  setV('p_notes', p.notes);
+  toggleSpouseIncome();
+  const i = c.income || {};
+  ['salary','business','side','rental','investment','other'].forEach(k => setV('i_'+k, i[k]));
+  const e = c.expenses || {};
+  ['housing','utilities','food','transport','school','insurance','funeral','medical','lifestyle','remittance','other'].forEach(k => setV('e_'+k, e[k]));
+  const s = c.savings || {};
+  ['monthly','emergency','cash','invest_monthly','portfolio','shares'].forEach(k => setV('s_'+k, s[k]));
+  const d = c.debt || {};
+  ['mortgage','vehicle','personal','credit','business','other','monthly_payment'].forEach(k => setV('d_'+k, d[k]));
+  const a = c.assets || {};
+  ['cash','property_primary','property_inv','vehicles','business','investments','retirement','other'].forEach(k => setV('a_'+k, a[k]));
+  const ins = c.insurance || {};
+  setV('ins_life', ins.life); setS('ins_life_status', ins.life_status);
+  setV('ins_funeral', ins.funeral); setV('ins_disability', ins.disability);
+  setV('ins_critical', ins.critical); setV('ins_medical', ins.medical); setV('ins_premium_total', ins.premium_total);
+  const r = c.retirement || {};
+  ['current','monthly','target','return_rate','desired_income','inflation'].forEach(k => setV('r_'+k, r[k]));
+  calcIncome(); calcExpenses(); calcSavings(); calcDebt(); calcAssets(); calcInsurance(); calcRetirement();
+}
+
+function saveDB() { /* Replaced by saveClientToSheets — kept for compatibility */ }
+
+function filterClients(q) { renderClientList(q); }
+
+function renderPipeline() {
+  const counts = {new:0,booked:0,seen:0,closed:0,followup:0};
+  const today  = new Date(); today.setHours(0,0,0,0);
+
+  // Count by status
+  clientDB.forEach(c => {
+    const s = c.profile?.pipeline_status || 'new';
+    if (counts[s] !== undefined) counts[s]++;
+  });
+  ['new','booked','seen','closed'].forEach(s => {
+    const el = document.getElementById('pipe-'+s);
+    if (el) el.textContent = counts[s];
+  });
+
+  // Follow-ups due
+  const fuEl = document.getElementById('followup-list');
+  const due = clientDB.filter(c => c.profile?.followup_date).map(c => {
+    const fd = new Date(c.profile.followup_date);
+    const diff = Math.floor((fd - today) / (1000*60*60*24));
+    return { c, diff };
+  }).sort((a,b) => a.diff - b.diff);
+
+  if (due.length === 0) {
+    fuEl.innerHTML = '<div style="color:var(--gray);font-size:13px;">No follow-up dates set. Open a client profile and set a follow-up date.</div>';
+  } else {
+    fuEl.innerHTML = due.map(({c, diff}) => {
+      const cls = diff < 0 ? 'overdue' : diff === 0 ? 'due' : 'ok';
+      const label = diff < 0 ? `${Math.abs(diff)}d overdue` : diff === 0 ? 'Today' : `In ${diff}d`;
+      const wa = c.profile?.whatsapp ? `<a href="https://wa.me/${(c.profile.whatsapp||'').replace(/[^0-9]/g,'')}" target="_blank" style="background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.3);color:#25D366;font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;letter-spacing:.5px;">💬 WhatsApp</a>` : '';
+      return `<div class="followup-card">
+        <div style="flex:1;">
+          <div class="followup-name">${c.profile?.name||'Unnamed'}</div>
+          <div class="followup-meta">${c.profile?.followup_notes||'No notes'}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          ${wa}
+          <div class="followup-days ${cls}">${label}</div>
+          <button class="btn btn-sm btn-ghost" onclick="loadClient('${c.id}');showPanel('profile',document.getElementById('nav-profile'))">Open</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Pipeline list grouped by status
+  const statusOrder = ['new','booked','seen','followup','closed'];
+  const statusLabels = {new:'🟡 New Lead',booked:'🔵 Session Booked',seen:'🟣 Session Done',followup:'🔴 Follow-up Needed',closed:'🟢 Closed'};
+  const plEl = document.getElementById('pipeline-list');
+  let out = '';
+  statusOrder.forEach(status => {
+    const group = clientDB.filter(c => (c.profile?.pipeline_status||'new') === status);
+    if (!group.length) return;
+    out += `<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-weight:600;margin:16px 0 8px;">${statusLabels[status]} (${group.length})</div>`;
+    out += group.map(c => {
+      const name = c.profile?.name || 'Unnamed';
+      const initials = name.split(' ').map(w=>w[0]||'').slice(0,2).join('').toUpperCase();
+      const score = c.analysis?.healthScore || 0;
+      const sClass = score >= 75 ? 'good' : score >= 50 ? 'ok' : score >= 30 ? 'risk' : 'danger';
+      const wa = c.profile?.whatsapp ? `<a href="https://wa.me/${(c.profile.whatsapp||'').replace(/[^0-9]/g,'')}" target="_blank" onclick="event.stopPropagation()" style="color:#25D366;font-size:10px;font-weight:700;text-decoration:none;" title="Open WhatsApp">💬</a>` : '';
+      return `<div class="client-item" onclick="loadClient('${c.id}');showPanel('profile',document.getElementById('nav-profile'))" style="margin-bottom:8px;">
+        <div class="ci-avatar">${initials||'?'}</div>
+        <div class="ci-body">
+          <div class="ci-name" style="display:flex;align-items:center;gap:8px;">${name} ${wa}</div>
+          <div class="ci-meta">${c.profile?.whatsapp||''} · ${c.created||''}</div>
+        </div>
+        ${score ? `<div class="ci-score ${sClass}">${score}</div>` : ''}
+        <button class="btn btn-sm btn-ghost no-print" onclick="event.stopPropagation();loadClient('${c.id}');showPanel('profile',document.getElementById('nav-profile'))">Open</button>
+      </div>`;
+    }).join('');
+  });
+  plEl.innerHTML = out || '<div style="color:var(--gray);font-size:13px;">No clients yet.</div>';
+}
+
+function renderClientList(filter='') {
+  const el = document.getElementById('client-list');
+  const filtered = clientDB.filter(c => {
+    const name = (c.profile?.name || '').toLowerCase();
+    const q = filter.toLowerCase();
+    return !q || name.includes(q);
+  });
+  if (!filtered.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">·</div><div class="empty-text">${filter ? 'No clients match "'+filter+'"' : 'No clients yet. Click <strong>+ New Client</strong>'}</div></div>`;
+    return;
+  }
+  el.innerHTML = filtered.map(c => {
+    const score = c.analysis?.healthScore || 0;
+    const sClass = score >= 75 ? 'good' : score >= 50 ? 'ok' : score >= 30 ? 'risk' : 'danger';
+    const name = c.profile?.name || 'Unnamed Client';
+    const initials = name.split(' ').map(w=>w[0]||'').slice(0,2).join('').toUpperCase();
+    const meta = [c.profile?.age ? `Age ${c.profile.age}` : '', getAvatarName(c), c.created].filter(Boolean).join(' · ');
+    const isActive = c.id === activeClientId;
+    const pStatus = c.profile?.pipeline_status || 'new';
+    const statusLabels = {new:'New Lead',booked:'Session Booked',seen:'Session Done',closed:'Closed',followup:'Follow-up'};
+    const statusLabel = statusLabels[pStatus] || 'New Lead';
+    const wa = c.profile?.whatsapp ? `<a href="https://wa.me/${c.profile.whatsapp.replace(/[^0-9]/g,'')}" target="_blank" onclick="event.stopPropagation()" style="color:var(--gold);font-size:10px;text-decoration:none;" title="WhatsApp ${c.profile.whatsapp}">💬 WA</a>` : '';
+    return `<div class="client-item ${isActive?'active-client':''}" onclick="loadClient('${c.id}')">
+      <div class="ci-avatar">${initials||'?'}</div>
+      <div class="ci-body">
+        <div class="ci-name" style="display:flex;align-items:center;gap:8px;">${name} ${wa}</div>
+        <div class="ci-meta">${meta || 'No profile data'}</div>
+        <div style="margin-top:5px;"><span class="status-badge status-${pStatus}">${statusLabel}</span></div>
+      </div>
+      ${score ? `<div class="ci-score ${sClass}">${score}</div>` : ''}
+      <div class="ci-actions no-print">
+        <button class="btn btn-sm btn-ghost" onclick="event.stopPropagation();loadClient('${c.id}')">Open</button>
+        <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteClient('${c.id}')">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+  const total = clientDB.length;
+  const scores = clientDB.map(c => c.analysis?.healthScore || 0);
+  document.getElementById('stat-total-clients').textContent = total;
+  document.getElementById('stat-healthy').textContent = scores.filter(s=>s>=70).length;
+  document.getElementById('stat-review').textContent = scores.filter(s=>s>=40&&s<70).length;
+  document.getElementById('stat-critical').textContent = scores.filter(s=>s<40&&s>0).length;
+  const fuCount = clientDB.filter(c => {
+    if (!c.profile?.followup_date) return false;
+    const fd = new Date(c.profile.followup_date); const today = new Date(); today.setHours(0,0,0,0);
+    return fd <= today;
+  }).length;
+  const fuEl2 = document.getElementById('stat-followup');
+  if (fuEl2) fuEl2.textContent = fuCount;
+}
+
+function getAvatarName(c) {
+  const inc = (c.income?.salary||0) + (c.income?.business||0) + (c.income?.side||0);
+  if (inc <= 9000 && inc > 0) return 'Essential Provider';
+  if (inc <= 25000 && c.profile?.marital === 'married' && c.profile?.spouse_income === 'none') return 'Breadwinner';
+  if (c.profile?.business === 'yes_primary') return 'Wealth Builder';
+  if (!c.profile?.dependents || c.profile?.dependents == 0) return 'Single Professional';
+  return 'Breadwinner';
+}
+
+// ── SIDEBAR UPDATE ────────────────────────────────────────────
+function updateSidebar() {
+  const name = gs('p_name');
+  const age = gv('p_age');
+  const inc = gv('i_salary') + gv('i_business') + gv('i_side');
+  if (name) {
+    document.getElementById('sb-client-box').style.display = 'block';
+    document.getElementById('sb-client-name').textContent = name;
+    document.getElementById('sb-client-meta').textContent = [age ? `Age ${age}` : '', inc ? P(inc)+'/mo' : ''].filter(Boolean).join(' · ') || '—';
+  }
+}
+
+// ── SECTION CALCULATIONS ─────────────────────────────────────
+function calcIncome() {
+  const spouseSalary = gv('i_spouse_salary') || gv('p_spouse_salary') || 0;
+  const spouseOther = gv('i_spouse_other') || 0;
+  const clientIncome = gv('i_salary') + gv('i_business') + gv('i_side');
+  const spouseTotal = spouseSalary + spouseOther;
+  const total = clientIncome + gv('i_rental') + gv('i_investment') + gv('i_other') + spouseTotal;
+  const passive = gv('i_rental') + gv('i_investment') + gv('i_other');
+  document.getElementById('income-summary-cards').innerHTML = `
+    <div class="metric-card">
+      <div class="metric-label">Total Household Income</div>
+      <div class="metric-val">${P(total)}</div>
+      <div class="metric-sub">Combined all sources</div>
+    </div>
+    <div class="metric-card info">
+      <div class="metric-label">Client Income</div>
+      <div class="metric-val">${P(clientIncome)}</div>
+      <div class="metric-sub">${spouseTotal > 0 ? 'Spouse: '+P(spouseTotal)+'/month' : 'No spouse income declared'}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Annual Household Income</div>
+      <div class="metric-val">${P(total*12)}</div>
+      <div class="metric-sub">Gross per year</div>
+    </div>`;
+}
+
+function calcExpenses() {
+  const total = gv('e_housing')+gv('e_utilities')+gv('e_food')+gv('e_transport')+gv('e_school')+gv('e_insurance')+gv('e_funeral')+gv('e_medical')+gv('e_lifestyle')+gv('e_remittance')+gv('e_other');
+  const income = gv('i_salary')+gv('i_business')+gv('i_side')+gv('i_rental')+gv('i_investment')+gv('i_other');
+  const ratio = income ? (total / income) : 0;
+  const cls = ratio > 0.9 ? 'danger' : ratio > 0.75 ? 'warning' : 'success';
+  document.getElementById('expense-summary-cards').innerHTML = `<div class="grid-3">
+    <div class="metric-card ${cls}">
+      <div class="metric-label">Total Monthly Expenses</div>
+      <div class="metric-val">${P(total)}</div>
+      <div class="metric-sub">${income ? ((ratio*100).toFixed(0))+'% of income' : '—'}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Annual Expenses</div>
+      <div class="metric-val">${P(total*12)}</div>
+      <div class="metric-sub">Per year</div>
+    </div>
+    <div class="metric-card ${income - total >= 0 ? 'success':'danger'}">
+      <div class="metric-label">Monthly Cashflow</div>
+      <div class="metric-val">${P(income - total)}</div>
+      <div class="metric-sub">${income - total >= 0 ? 'Positive surplus' : 'Deficit — overspending'}</div>
+    </div></div>`;
+}
+
+function calcSavings() {
+  const totalSavings = gv('s_emergency') + gv('s_cash') + gv('s_portfolio') + gv('s_shares');
+  const income = gv('i_salary')+gv('i_business')+gv('i_side')+gv('i_rental')+gv('i_investment')+gv('i_other');
+  const expenses = gv('e_housing')+gv('e_utilities')+gv('e_food')+gv('e_transport')+gv('e_school')+gv('e_insurance')+gv('e_funeral')+gv('e_medical')+gv('e_lifestyle')+gv('e_remittance')+gv('e_other');
+  const monthly_save = gv('s_monthly') + gv('s_invest_monthly');
+  const savings_rate = income ? (monthly_save / income) : 0;
+  const emergency_months = expenses > 0 ? (gv('s_emergency') / expenses) : 0;
+  const em_cls = emergency_months >= 6 ? 'success' : emergency_months >= 3 ? 'warning' : 'danger';
+  document.getElementById('savings-summary-cards').innerHTML = `
+    <div class="metric-card">
+      <div class="metric-label">Total Liquid Savings</div>
+      <div class="metric-val">${P(totalSavings)}</div>
+      <div class="metric-sub">Cash + portfolio</div>
+    </div>
+    <div class="metric-card ${em_cls}">
+      <div class="metric-label">Emergency Fund Coverage</div>
+      <div class="metric-val">${emergency_months.toFixed(1)} <span style="font-size:12px;color:var(--gray)">months</span></div>
+      <div class="metric-sub">${em_cls==='success' ? 'Adequate (6+ months)' : em_cls==='warning' ? 'Below target (3–6 months)' : 'Critical (under 3 months)'}</div>
+    </div>
+    <div class="metric-card ${savings_rate >= 0.15 ? 'success' : savings_rate >= 0.05 ? 'warning' : 'danger'}">
+      <div class="metric-label">Monthly Savings Rate</div>
+      <div class="metric-val">${(savings_rate*100).toFixed(1)}%</div>
+      <div class="metric-sub">Target: 15–20% of income</div>
+    </div>`;
+}
+
+function calcDebt() {
+  const total = gv('d_mortgage')+gv('d_vehicle')+gv('d_personal')+gv('d_credit')+gv('d_business')+gv('d_other');
+  const income = gv('i_salary')+gv('i_business')+gv('i_side')+gv('i_rental')+gv('i_investment')+gv('i_other');
+  const monthly = gv('d_monthly_payment');
+  const dti = income ? (monthly / income) : 0;
+  const dti_cls = dti > 0.45 ? 'danger' : dti > 0.3 ? 'warning' : 'success';
+  document.getElementById('debt-summary-cards').innerHTML = `<div class="grid-3">
+    <div class="metric-card danger">
+      <div class="metric-label">Total Debt Outstanding</div>
+      <div class="metric-val">${P(total)}</div>
+      <div class="metric-sub">All liabilities combined</div>
+    </div>
+    <div class="metric-card ${dti_cls}">
+      <div class="metric-label">Debt-to-Income Ratio</div>
+      <div class="metric-val">${(dti*100).toFixed(1)}%</div>
+      <div class="metric-sub">Target: under 30%</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Monthly Debt Payments</div>
+      <div class="metric-val">${P(monthly)}</div>
+      <div class="metric-sub">${income ? ((monthly/income*100).toFixed(0))+'% of income' : '—'}</div>
+    </div></div>`;
+}
+
+function calcAssets() {
+  const total = gv('a_cash')+gv('a_property_primary')+gv('a_property_inv')+gv('a_vehicles')+gv('a_business')+gv('a_investments')+gv('a_retirement')+gv('a_other');
+  const totalDebt = gv('d_mortgage')+gv('d_vehicle')+gv('d_personal')+gv('d_credit')+gv('d_business')+gv('d_other');
+  const netWorth = total - totalDebt;
+  const nw_cls = netWorth > 0 ? 'success' : 'danger';
+  document.getElementById('assets-summary-cards').innerHTML = `<div class="grid-3">
+    <div class="metric-card">
+      <div class="metric-label">Total Assets</div>
+      <div class="metric-val">${P(total)}</div>
+      <div class="metric-sub">All asset classes</div>
+    </div>
+    <div class="metric-card ${nw_cls}">
+      <div class="metric-label">Net Worth</div>
+      <div class="metric-val">${P(netWorth)}</div>
+      <div class="metric-sub">${netWorth > 0 ? 'Positive net worth' : 'Negative — liabilities exceed assets'}</div>
+    </div>
+    <div class="metric-card info">
+      <div class="metric-label">Property Assets</div>
+      <div class="metric-val">${P(gv('a_property_primary')+gv('a_property_inv'))}</div>
+      <div class="metric-sub">${total ? ((( gv('a_property_primary')+gv('a_property_inv'))/total*100).toFixed(0))+'% of assets' : '—'}</div>
+    </div></div>`;
+}
+
+function calcInsurance() {
+  const lifeCover = gv('ins_life');
+  const income = gv('i_salary')+gv('i_business')+gv('i_side')+gv('i_rental')+gv('i_investment')+gv('i_other');
+  const multiplier = lifeCover && income ? (lifeCover / income / 12).toFixed(1) : 0;
+  document.getElementById('insurance-summary-cards').innerHTML = `<div class="grid-3">
+    <div class="metric-card">
+      <div class="metric-label">Life Cover</div>
+      <div class="metric-val">${P(lifeCover)}</div>
+      <div class="metric-sub">${multiplier ? multiplier+'× annual income' : 'Not set'}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Funeral Cover</div>
+      <div class="metric-val">${P(gv('ins_funeral'))}</div>
+      <div class="metric-sub">Sum assured</div>
+    </div>
+    <div class="metric-card warning">
+      <div class="metric-label">Disability Cover</div>
+      <div class="metric-val">${P(gv('ins_disability'))}</div>
+      <div class="metric-sub">Income replacement</div>
+    </div></div>`;
+}
+
+function calcRetirement() {
+  const current = gv('r_current') || gv('a_retirement');
+  const monthly = gv('r_monthly');
+  const returnRate = (gv('r_return') || 8) / 100;
+  const inflation = (gv('r_inflation') || 5) / 100;
+  const age = gv('p_age') || 35;
+  const retireAge = gv('p_retire_age') || 65;
+  const years = Math.max(retireAge - age, 1);
+  const target = gv('r_target');
+  const realReturn = (1 + returnRate) / (1 + inflation) - 1;
+
+  // FV calculation with contributions
+  const fv = current * Math.pow(1 + realReturn, years) + monthly * 12 * ((Math.pow(1 + realReturn, years) - 1) / realReturn);
+  const gap = target > 0 ? Math.max(target - fv, 0) : 0;
+  const gap_cls = gap > target * 0.5 ? 'danger' : gap > 0 ? 'warning' : 'success';
+
+  document.getElementById('retirement-summary-cards').innerHTML = `
+    <div class="metric-card info">
+      <div class="metric-label">Projected Fund at Retirement</div>
+      <div class="metric-val">${P(fv)}</div>
+      <div class="metric-sub">At ${retireAge} (${years} years)</div>
+    </div>
+    <div class="metric-card ${gap_cls}">
+      <div class="metric-label">Retirement Gap</div>
+      <div class="metric-val">${target > 0 ? P(gap) : '—'}</div>
+      <div class="metric-sub">${target > 0 ? (gap === 0 ? '✓ On track' : 'Shortfall vs target') : 'Set target above'}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Years to Retirement</div>
+      <div class="metric-val">${years}</div>
+      <div class="metric-sub">Target age: ${retireAge}</div>
+    </div>`;
+
+  renderRetirementChart(current, monthly, returnRate, inflation, years, age, retireAge);
+}
+
+function renderRetirementChart(current, monthly, returnRate, inflation, years, startAge, retireAge) {
+  const ctx = document.getElementById('retirement-chart');
+  if (!ctx) return;
+  if (charts.retirement) { charts.retirement.destroy(); }
+  const realReturn = (1 + returnRate) / (1 + (inflation / 100 || 0.05)) - 1;
+  const labels = [], data = [], noContrib = [];
+  for (let y = 0; y <= years; y++) {
+    labels.push((startAge + y).toString());
+    const fv = current * Math.pow(1 + realReturn, y) + monthly * 12 * ((Math.pow(1 + realReturn, y) - 1) / (realReturn || 0.001));
+    data.push(Math.round(fv));
+    noContrib.push(Math.round(current * Math.pow(1 + realReturn, y)));
+  }
+  charts.retirement = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'With Contributions',
+        data, borderColor: '#C9A84C', backgroundColor: 'rgba(201,168,76,0.08)',
+        fill: true, tension: 0.4, borderWidth: 2, pointRadius: 0
+      },{
+        label: 'No New Contributions',
+        data: noContrib, borderColor: 'rgba(255,255,255,0.15)', backgroundColor: 'transparent',
+        fill: false, tension: 0.4, borderWidth: 1, borderDash: [4,4], pointRadius: 0
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#7A8196', font: { size: 11 } } },
+        tooltip: { callbacks: { label: ctx => 'P ' + ctx.raw.toLocaleString() } }
+      },
+      scales: {
+        x: { ticks: { color: '#7A8196', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
+        y: { ticks: { color: '#7A8196', font: { size: 10 }, callback: v => 'P'+Math.round(v/1000)+'k' }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
+}
+
+// ── FULL ANALYSIS ENGINE ─────────────────────────────────────
+function runFullAnalysis() {
+  if (!activeClientId) {
+    alert('Please create or load a client first.');
+    showPanel('clients', document.getElementById('nav-clients'));
+    return;
+  }
+  saveClient();
+
+  const c = clientDB.find(x => x.id === activeClientId);
+  if (!c) return;
+
+  // ── GATHER ALL DATA ──
+  const name        = c.profile.name || 'Client';
+  const age         = c.profile.age || 35;
+  const retireAge   = c.profile.retire_age || 65;
+  const yearsToRet  = Math.max(retireAge - age, 1);
+  const dependents  = c.profile.dependents || 0;
+  const youngest    = c.profile.youngest || 0;
+  const marital     = c.profile.marital || '';
+  const spouseInc   = c.profile.spouse_income || 'none';
+  const health      = c.profile.health || 'good';
+  const smoker      = c.profile.smoker || 'no';
+  const will        = c.profile.will || 'no';
+  const business    = c.profile.business || 'no';
+
+  const totalIncome = (c.income.salary||0) + (c.income.business||0) + (c.income.side||0) + (c.income.rental||0) + (c.income.investment||0) + (c.income.other||0);
+  const totalExpenses = Object.values(c.expenses).reduce((a,b) => a+(b||0), 0);
+  const cashflow    = totalIncome - totalExpenses;
+  const totalDebt   = (c.debt.mortgage||0) + (c.debt.vehicle||0) + (c.debt.personal||0) + (c.debt.credit||0) + (c.debt.business||0) + (c.debt.other||0);
+  const monthlyDebt = c.debt.monthly_payment;
+  const totalAssets = (c.assets.cash||0) + (c.assets.property_primary||0) + (c.assets.property_inv||0) + (c.assets.vehicles||0) + (c.assets.business||0) + (c.assets.investments||0) + (c.assets.retirement||0) + (c.assets.other||0);
+  const netWorth    = totalAssets - totalDebt;
+  const savings     = (c.savings.emergency||0) + (c.savings.cash||0) + (c.savings.portfolio||0) + (c.savings.shares||0);
+  const monthlySave = (c.savings.monthly||0) + (c.savings.invest_monthly||0);
+  const savingsRate = totalIncome > 0 ? monthlySave / totalIncome : 0;
+  const dti         = totalIncome > 0 ? monthlyDebt / totalIncome : 0;
+  const emergencyMonths = totalExpenses > 0 ? c.savings.emergency / totalExpenses : 0;
+  const lifeCover   = c.insurance.life || 0;
+
+  // ── AVATAR ──
+  let avatar, avatarIcon;
+  if (totalIncome <= 9000 && totalIncome > 0) { avatar = 'Essential Provider'; avatarIcon = '·'; }
+  else if (spouseInc === 'none' && dependents > 0) { avatar = 'Breadwinner'; avatarIcon = '·'; }
+  else if (business === 'yes_primary' || c.assets.business > 0) { avatar = 'Wealth Builder'; avatarIcon = '·'; }
+  else { avatar = 'Single Professional'; avatarIcon = '·'; }
+
+  // ── GAP CALCULATION ──
+  const yearsToIndep = youngest > 0 ? Math.max(22 - youngest, 1) : 10;
+  const incomeReplacement = totalIncome * 12 * yearsToIndep;
+  const finalExpenses = 35000;
+  const grossNeed = incomeReplacement + totalDebt + finalExpenses;
+  const totalBuffer = lifeCover + savings;
+  const netGap = Math.max(grossNeed - totalBuffer, 0);
+  const survivalMonths = totalExpenses > 0 ? totalBuffer / totalExpenses : 0;
+
+  // ── RETIREMENT GAP ──
+  const returnRate = (c.retirement.return_rate || 8) / 100;
+  const inflation = (c.retirement.inflation || 5) / 100;
+  const realReturn = Math.max((1 + returnRate) / (1 + inflation) - 1, 0.01);
+  const currentRetirement = c.retirement.current || c.assets.retirement;
+  const monthlyRetirement = c.retirement.monthly || 0;
+  const fvRetirement = currentRetirement * Math.pow(1 + realReturn, yearsToRet) +
+    monthlyRetirement * 12 * ((Math.pow(1 + realReturn, yearsToRet) - 1) / realReturn);
+  const retirementTarget = c.retirement.target || (totalExpenses * 12 * 20);
+  const retirementGap = Math.max(retirementTarget - fvRetirement, 0);
+
+  // ── INSURANCE GAP ──
+  const recommendedLife = totalIncome * 12 * 10;
+  const insuranceGap = Math.max(recommendedLife - lifeCover, 0);
+
+  // ── HEALTH SCORE (0–100) ──
+  let healthScore = 0;
+
+  // Cashflow (max 20)
+  const cfScore = cashflow >= totalIncome * 0.2 ? 20 : cashflow >= 0 ? Math.round((cashflow / (totalIncome * 0.2)) * 20) : 0;
+  healthScore += cfScore;
+
+  // Savings rate (max 20)
+  const srScore = savingsRate >= 0.2 ? 20 : Math.round(savingsRate / 0.2 * 20);
+  healthScore += srScore;
+
+  // Emergency fund (max 20)
+  const efScore = emergencyMonths >= 6 ? 20 : Math.round((emergencyMonths / 6) * 20);
+  healthScore += efScore;
+
+  // Debt ratio (max 20)
+  const drScore = dti <= 0.15 ? 20 : dti >= 0.5 ? 0 : Math.round((1 - (dti - 0.15) / 0.35) * 20);
+  healthScore += drScore;
+
+  // Protection gap (max 20)
+  const pgScore = netGap === 0 ? 20 : netGap < grossNeed * 0.25 ? 16 : netGap < grossNeed * 0.5 ? 10 : netGap < grossNeed * 0.75 ? 5 : 0;
+  healthScore += pgScore;
+
+  healthScore = Math.min(Math.max(Math.round(healthScore), 0), 100);
+  const scoreClass = healthScore >= 75 ? 'low' : healthScore >= 50 ? 'medium' : healthScore >= 30 ? 'high' : 'critical';
+  const scoreLabel = healthScore >= 75 ? 'Strong' : healthScore >= 50 ? 'Fair' : healthScore >= 30 ? 'At Risk' : 'Critical';
+
+  // ── RISK SCORE ──
+  let riskScore = 0;
+  const riskDims = [];
+
+  // Income dependency
+  let d1 = spouseInc === 'none' ? 20 : spouseInc === 'partial' ? 14 : spouseInc === 'equal' ? 8 : 5;
+  riskDims.push({ label:'Income Dependency', score:d1, max:20, desc: spouseInc==='none'?'Sole income — zero fallback':'Partial secondary income exists' });
+
+  // Dependents
+  let d2 = Math.min(dependents * 3 + (youngest <= 5 && youngest > 0 ? 8 : youngest <= 10 ? 5 : youngest <= 15 ? 3 : 0), 20);
+  riskDims.push({ label:'Dependents & Duration', score:d2, max:20, desc:`${dependents} dependent(s) · ${yearsToIndep} years exposure` });
+
+  // Cover gap
+  let d3 = lifeCover === 0 ? 20 : netGap > 1000000 ? 15 : netGap > 500000 ? 10 : netGap > 200000 ? 7 : 3;
+  riskDims.push({ label:'Cover Gap Severity', score:d3, max:20, desc: P(netGap) + ' unprotected gap' });
+
+  // Debt
+  let d4 = totalDebt > 500000 ? 15 : totalDebt > 200000 ? 10 : totalDebt > 50000 ? 6 : 2;
+  riskDims.push({ label:'Debt Exposure', score:d4, max:15, desc: P(totalDebt) + ' total liabilities' });
+
+  // Survival
+  let d5 = survivalMonths < 1 ? 15 : survivalMonths < 3 ? 12 : survivalMonths < 6 ? 8 : survivalMonths < 12 ? 4 : 1;
+  riskDims.push({ label:'Survival Runway', score:d5, max:15, desc: survivalMonths.toFixed(1) + ' months family runway' });
+
+  // Health
+  let d6 = health === 'complex' ? 10 : health === 'managed' ? 6 : 2;
+  if (smoker === 'yes') d6 = Math.min(d6 + 4, 10);
+  riskDims.push({ label:'Health & Underwriting Risk', score:d6, max:10, desc: health + (smoker==='yes'?' · smoker':'') });
+
+  // Business/estate
+  let d7 = (business==='yes_primary'?10:business==='yes_side'?4:0) + (will==='no'||will==='unsure'?3:0);
+  d7 = Math.min(d7, 10);
+  riskDims.push({ label:'Business / Estate Risk', score:d7, max:10, desc: business!=='no'?'Business liquidity gap':'Estate: '+(will==='yes'?'Will in place':'No will') });
+
+  // Age
+  let d8 = age >= 50 && lifeCover === 0 ? 10 : age >= 45 ? 7 : age >= 40 ? 5 : age >= 35 ? 3 : 1;
+  riskDims.push({ label:'Age & Time Sensitivity', score:d8, max:10, desc:`Age ${age} — premium window: ${age<35?'optimal':age<45?'good':'narrowing'}` });
+
+  riskScore = riskDims.reduce((s,d) => s + d.score, 0);
+  const riskBand = riskScore >= 75 ? 'CRITICAL' : riskScore >= 55 ? 'HIGH' : riskScore >= 35 ? 'MEDIUM' : 'LOW';
+  const riskColor = riskScore >= 75 ? 'critical' : riskScore >= 55 ? 'high' : riskScore >= 35 ? 'medium' : 'low';
+
+  // ── ADVISOR INSIGHTS ──
+  const advisorInsights = [];
+  if (cashflow < 0) advisorInsights.push({ type:'red', icon:'·', title:'Negative Cashflow — Overspending', text:`Monthly deficit of ${P(Math.abs(cashflow))}. Expenses exceed income. Budget restructuring is critical before adding any additional commitments.` });
+  else if (cashflow < totalIncome * 0.1) advisorInsights.push({ type:'amber', icon:'·', title:'Thin Cashflow Margin', text:`Only ${P(cashflow)}/month surplus (${(cashflow/totalIncome*100).toFixed(0)}% of income). Very limited buffer for protection premiums.` });
+  if (emergencyMonths < 3) advisorInsights.push({ type:'red', icon:'·', title:'Critically Low Emergency Fund', text:`Only ${emergencyMonths.toFixed(1)} months of expenses covered. Target is 6 months. Family has almost no financial runway.` });
+  else if (emergencyMonths < 6) advisorInsights.push({ type:'amber', icon:'·', title:'Emergency Fund Below Target', text:`${emergencyMonths.toFixed(1)} months covered. Recommend building to 6 months minimum (${P(totalExpenses * 6 - c.savings.emergency)} needed).` });
+  if (dti > 0.45) advisorInsights.push({ type:'red', icon:'·', title:'Dangerously High Debt Load', text:`Debt-to-income ratio of ${(dti*100).toFixed(0)}% is well above the 30% safe threshold. High risk of financial collapse if income drops.` });
+  else if (dti > 0.3) advisorInsights.push({ type:'amber', icon:'·', title:'Elevated Debt Ratio', text:`DTI of ${(dti*100).toFixed(0)}% exceeds the 30% guideline. Debt repayment strategy recommended.` });
+  if (lifeCover === 0) advisorInsights.push({ type:'red', icon:'·', title:'Zero Life Protection in Place', text:`Client has no life cover. Full gap of ${P(grossNeed)} is entirely unprotected. This is the most urgent gap to close.` });
+  else if (netGap > grossNeed * 0.5) advisorInsights.push({ type:'amber', icon:'·', title:'Significant Insurance Shortfall', text:`Life cover covers only ${((lifeCover/grossNeed)*100).toFixed(0)}% of the protection need. Gap of ${P(netGap)} remains.` });
+  if (savingsRate < 0.05) advisorInsights.push({ type:'amber', icon:'·', title:'Very Low Savings Rate', text:`Savings rate of ${(savingsRate*100).toFixed(1)}% is well below the 15% target. Long-term wealth building is severely compromised.` });
+  if (retirementGap > 0) advisorInsights.push({ type:'amber', icon:'·', title:`Retirement Gap: ${P(retirementGap)}`, text:`Projected fund of ${P(fvRetirement)} falls short of target ${P(retirementTarget)} by ${P(retirementGap)}. Monthly contributions need to increase.` });
+  if (will === 'no' || will === 'unsure') advisorInsights.push({ type:'gold', icon:'·', title:'No Valid Will in Place', text:`Estate will enter intestate proceedings. Cover payout (outside estate) becomes the critical financial lifeline. Recommend urgent will creation.` });
+  if (spouseInc === 'none' && dependents > 0) advisorInsights.push({ type:'red', icon:'·', title:'Sole Income Household', text:`${name}'s income is the only source for this family. There is zero secondary fallback. One event eliminates 100% of household income.` });
+  if (!advisorInsights.length) advisorInsights.push({ type:'green', icon:'·', title:'Moderate Risk Profile', text:'No critical red flags. Focus session on gap optimisation, retirement growth, and long-term wealth structuring.' });
+
+  // ── STORE ANALYSIS ──
+  const analysis = {
+    name, age, avatar, avatarIcon, totalIncome, totalExpenses, cashflow,
+    totalDebt, monthlyDebt, totalAssets, netWorth, savings, monthlySave,
+    savingsRate, dti, emergencyMonths, lifeCover, netGap, grossNeed,
+    totalBuffer, survivalMonths, incomeReplacement, finalExpenses, yearsToIndep,
+    fvRetirement, retirementGap, retirementTarget, insuranceGap,
+    healthScore, scoreClass, scoreLabel, riskScore, riskBand, riskColor, riskDims,
+    advisorInsights, cfScore, srScore, efScore, drScore, pgScore,
+    spouseInc, dependents, youngest, will, business, health, smoker, marital,
+    profile: c.profile, income: c.income, expenses: c.expenses, savings: c.savings,
+    debt: c.debt, assets: c.assets, insurance: c.insurance, retirement: c.retirement
+  };
+  c.analysis = analysis;
+  saveClientToSheets(c);
+  analysisRun = true;
+
+  renderAll(analysis);
+  renderClientList();
+
+  // Update sidebar score
+  document.getElementById('sb-score-val').textContent = healthScore;
+  document.getElementById('sb-score-fill').style.width = healthScore + '%';
+
+  // Go to dashboard
+  showPanel('dashboard', document.getElementById('nav-dashboard'));
+}
+
+// ── RENDER ALL PANELS ────────────────────────────────────────
+function renderAll(d) {
+  renderDashboard(d);
+  renderGap(d);
+  renderScore(d);
+  renderReport(d);
+  renderProducts(d);
+}
+
+function renderDashboard(d) {
+  const scoreColor = d.riskColor==='critical'?'#C9344C':d.riskColor==='high'?'#C98010':d.riskColor==='medium'?'#C9A84C':'#28A060';
+  const cfClass = d.cashflow >= 0 ? 'success' : 'danger';
+  const nwClass = d.netWorth >= 0 ? 'success' : 'danger';
+
+  document.getElementById('dashboard-content').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div>
+        <div class="avatar-badge"><span class="avatar-badge-icon">${d.avatarIcon}</span>
+          <div><div class="avatar-badge-text">${d.avatar}</div><div class="avatar-badge-sub">${d.name} · Age ${d.age}</div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;" class="no-print">
+        <span class="tag gold">${d.riskBand} RISK</span>
+        <span class="tag ${d.healthScore>=75?'green':d.healthScore>=50?'gold':'red'}">Score: ${d.healthScore}/100</span>
+      </div>
+    </div>
+
+    <div class="grid-4" style="margin-bottom:20px;">
+      <div class="metric-card ${cfClass}"><div class="metric-label">Monthly Cashflow</div><div class="metric-val">${P(d.cashflow)}</div><div class="metric-sub">${d.cashflow>=0?'Positive surplus':'Deficit'}</div></div>
+      <div class="metric-card ${nwClass}"><div class="metric-label">Net Worth</div><div class="metric-val">${P(d.netWorth)}</div><div class="metric-sub">${d.netWorth>=0?'Positive':'Negative NW'}</div></div>
+      <div class="metric-card danger"><div class="metric-label">Protection Gap</div><div class="metric-val">${P(d.netGap)}</div><div class="metric-sub">Unprotected exposure</div></div>
+      <div class="metric-card info"><div class="metric-label">Survival Runway</div><div class="metric-val">${d.survivalMonths.toFixed(1)} mo</div><div class="metric-sub">Family financial runway</div></div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:20px;">
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">Income vs Expenses</div>
+        <canvas id="income-expense-chart" height="220"></canvas>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">Net Worth Breakdown</div>
+        <canvas id="networth-chart" height="220"></canvas>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:20px;">
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">Financial Health Score</div>
+        <canvas id="health-radar" height="240"></canvas>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">Savings vs Debt</div>
+        <canvas id="savings-debt-chart" height="240"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Advisor Insights</div>
+      ${d.advisorInsights.map(i => `
+        <div class="insight ${i.type}">
+          <span class="insight-icon">${i.icon}</span>
+          <div><div class="insight-title">${i.title}</div><div class="insight-text">${i.text}</div></div>
+        </div>`).join('')}
+    </div>`;
+
+  // Destroy ALL existing charts before re-rendering to prevent canvas reuse errors
+  Object.keys(charts).forEach(k => { try { charts[k].destroy(); } catch(e){} charts[k] = null; });
+
+  // Render charts after DOM update
+  setTimeout(() => {
+    renderIncomeExpenseChart(d);
+    renderNetWorthChart(d);
+    renderHealthRadar(d);
+    renderSavingsDebtChart(d);
+  }, 80);
+}
+
+function renderIncomeExpenseChart(d) {
+  const ctx = document.getElementById('income-expense-chart');
+  if (!ctx) return;
+  if (charts.incomeExpense) charts.incomeExpense.destroy();
+  const e = d.expenses;
+  charts.incomeExpense = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Income', 'Expenses'],
+      datasets: [{
+        data: [d.totalIncome, d.totalExpenses],
+        backgroundColor: ['rgba(201,168,76,0.7)', d.totalExpenses > d.totalIncome ? 'rgba(201,52,76,0.6)' : 'rgba(26,112,72,0.6)'],
+        borderColor: ['#C9A84C', d.totalExpenses > d.totalIncome ? '#C9344C' : '#1A7048'],
+        borderWidth: 1, borderRadius: 5
+      }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{label: c => 'P '+c.raw.toLocaleString()} } },
+      scales:{
+        x:{ticks:{color:'#7A8196'},grid:{display:false}},
+        y:{ticks:{color:'#7A8196',callback:v=>'P'+Math.round(v/1000)+'k'},grid:{color:'rgba(255,255,255,0.03)'}}
+      }
+    }
+  });
+}
+
+function renderNetWorthChart(d) {
+  const ctx = document.getElementById('networth-chart');
+  if (!ctx) return;
+  if (charts.netWorth) charts.netWorth.destroy();
+  const a = d.assets;
+  const vals = [a.property_primary+a.property_inv, a.business, a.investments+a.retirement, a.cash+a.vehicles+a.other].filter(v=>v>0);
+  const labs = ['Property','Business','Investments','Other Assets'].filter((_,i)=>[a.property_primary+a.property_inv,a.business,a.investments+a.retirement,a.cash+a.vehicles+a.other][i]>0);
+  charts.netWorth = new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels: labs, datasets: [{ data: vals, backgroundColor: ['rgba(201,168,76,0.7)','rgba(26,128,192,0.6)','rgba(26,112,72,0.6)','rgba(120,90,200,0.5)'], borderWidth:0, hoverOffset:4 }] },
+    options: { responsive:true, maintainAspectRatio:false, cutout:'65%',
+      plugins:{ legend:{position:'bottom',labels:{color:'#7A8196',font:{size:10},padding:10}},
+        tooltip:{ callbacks:{label: c => c.label+': P'+c.raw.toLocaleString()} } }
+    }
+  });
+}
+
+function renderHealthRadar(d) {
+  const ctx = document.getElementById('health-radar');
+  if (!ctx) return;
+  if (charts.healthRadar) charts.healthRadar.destroy();
+  charts.healthRadar = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['Cashflow','Savings Rate','Emergency Fund','Debt Ratio','Protection'],
+      datasets: [{
+        label: 'Score',
+        data: [d.cfScore, d.srScore, d.efScore, d.drScore, d.pgScore],
+        backgroundColor: 'rgba(201,168,76,0.15)', borderColor: '#C9A84C',
+        pointBackgroundColor: '#C9A84C', pointBorderColor: '#fff', borderWidth: 2
+      }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      scales:{ r:{ min:0, max:20, ticks:{stepSize:5,color:'#7A8196',backdropColor:'transparent'},
+        grid:{color:'rgba(255,255,255,0.06)'}, pointLabels:{color:'#9A9EB0',font:{size:11}} } },
+      plugins:{ legend:{display:false} }
+    }
+  });
+}
+
+function renderSavingsDebtChart(d) {
+  const ctx = document.getElementById('savings-debt-chart');
+  if (!ctx) return;
+  if (charts.savingsDebt) charts.savingsDebt.destroy();
+  charts.savingsDebt = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Total Savings','Total Debt'],
+      datasets: [{
+        data: [d.savings, d.totalDebt],
+        backgroundColor: ['rgba(26,112,72,0.6)','rgba(201,52,76,0.6)'],
+        borderColor: ['#1A7048','#C9344C'], borderWidth:1, borderRadius:5
+      }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false, indexAxis:'y',
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{label:c=>'P '+c.raw.toLocaleString()} } },
+      scales:{
+        x:{ticks:{color:'#7A8196',callback:v=>'P'+Math.round(v/1000)+'k'},grid:{color:'rgba(255,255,255,0.03)'}},
+        y:{ticks:{color:'#7A8196'},grid:{display:false}}
+      }
+    }
+  });
+}
+
+function renderGap(d) {
+  document.getElementById('gap-content').innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <div class="avatar-badge" style="display:inline-flex;margin-bottom:0;">
+          <span class="avatar-badge-icon">${d.avatarIcon}</span>
+          <div><div class="avatar-badge-text">${d.avatar}</div><div class="avatar-badge-sub">${d.name} · ${d.survivalMonths.toFixed(1)} months family runway</div></div>
+        </div>
+        <div class="card-title" style="margin-top:10px;">${d.name} — Protection Gap Report</div>
+        <div class="card-sub">Age ${d.age} · ${d.dependents} dependents · Monthly income ${P(d.totalIncome)} · ${d.yearsToIndep} years exposure</div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:20px;">
+        <div class="metric-card ${d.netGap > 1000000?'danger':d.netGap>400000?'warning':'success'}">
+          <div class="metric-label">Net Protection Gap</div>
+          <div class="metric-val">${P(d.netGap)}</div>
+          <div class="metric-sub">Unprotected family exposure</div>
+        </div>
+        <div class="metric-card ${d.survivalMonths < 3?'danger':d.survivalMonths<6?'warning':'success'}">
+          <div class="metric-label">Family Survival Period</div>
+          <div class="metric-val">${d.survivalMonths.toFixed(1)} mo</div>
+          <div class="metric-sub">Buffer ÷ monthly expenses</div>
+        </div>
+        <div class="metric-card info">
+          <div class="metric-label">Years of Exposure</div>
+          <div class="metric-val">${d.yearsToIndep} yrs</div>
+          <div class="metric-sub">Until youngest independent</div>
+        </div>
+      </div>
+
+      <div class="section-label">Gap Calculation Breakdown</div>
+      <table class="data-table" style="margin-bottom:20px;">
+        <thead><tr><th>Component</th><th>Calculation</th><th>Amount</th></tr></thead>
+        <tbody>
+          <tr><td>Income Replacement Need</td><td class="muted">${P(d.totalIncome)}/mo × 12 × ${d.yearsToIndep} yrs</td><td class="mono">${P(d.incomeReplacement)}</td></tr>
+          <tr><td>Outstanding Total Debt</td><td class="muted">As declared</td><td class="mono">${P(d.totalDebt)}</td></tr>
+          <tr><td>Final Expenses (funeral + estate)</td><td class="muted">Standard provision</td><td class="mono">${P(d.finalExpenses)}</td></tr>
+          <tr class="total"><td><strong>Gross Protection Need</strong></td><td></td><td class="mono">${P(d.grossNeed)}</td></tr>
+          <tr><td>Existing Life Cover</td><td class="muted">Declared</td><td class="mono" style="color:#C9344C;">− ${P(d.lifeCover)}</td></tr>
+          <tr><td>Liquid Savings</td><td class="muted">Declared</td><td class="mono" style="color:#C9344C;">− ${P(d.savings)}</td></tr>
+          <tr class="total"><td><strong>NET PROTECTION GAP</strong></td><td></td><td class="mono" style="color:var(--gold);font-size:17px;">${P(d.netGap)}</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-label">Risk Assessment</div>
+      ${d.riskDims.map(dim => {
+        const pct = Math.round((dim.score / dim.max) * 100);
+        const cls = pct >= 75 ? 'critical' : pct >= 50 ? 'high' : pct >= 25 ? 'medium' : 'low';
+        return `<div class="risk-band ${cls}">
+          <span class="risk-dot"></span>
+          <div class="risk-band-body">
+            <div class="risk-band-title">${dim.label}</div>
+            <div class="risk-band-desc">${dim.desc}</div>
+            <div class="score-bar" style="max-width:180px;margin-top:4px;"><div class="score-fill ${cls}" style="width:${pct}%"></div></div>
+          </div>
+          <div class="risk-band-score">${dim.score}<span style="font-size:11px;color:var(--gray)">/${dim.max}</span></div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="card">
+      <div class="section-label">Advisor Insights</div>
+      ${d.advisorInsights.map(i=>`<div class="insight ${i.type}"><span class="insight-icon">${i.icon}</span><div><div class="insight-title">${i.title}</div><div class="insight-text">${i.text}</div></div></div>`).join('')}
+    </div>`;
+}
+
+function renderScore(d) {
+  const scoreColor = d.riskColor==='critical'?'#C9344C':d.riskColor==='high'?'#C98010':d.riskColor==='medium'?'#C9A84C':'#28A060';
+  document.getElementById('score-content').innerHTML = `
+    <div class="grid-2-1">
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-header">
+          <div class="card-title">Financial Health Score</div>
+          <div class="card-sub">Composite score across 5 key dimensions — 100 = fully protected</div>
+        </div>
+        <div class="grid-4" style="margin-bottom:20px;">
+          <div class="metric-card" style="text-align:center;">
+            <div class="metric-label">Overall</div>
+            <div style="font-family:var(--mono);font-size:40px;color:${scoreColor};font-weight:500;">${d.healthScore}</div>
+            <div style="font-size:12px;color:${scoreColor};font-weight:600;">${d.scoreLabel}</div>
+          </div>
+          <div class="metric-card"><div class="metric-label">Cashflow</div><div class="metric-val">${d.cfScore}/20</div><div class="score-bar"><div class="score-fill ${d.cfScore>=15?'low':d.cfScore>=8?'medium':'high'}" style="width:${d.cfScore/20*100}%"></div></div></div>
+          <div class="metric-card"><div class="metric-label">Savings Rate</div><div class="metric-val">${d.srScore}/20</div><div class="score-bar"><div class="score-fill ${d.srScore>=15?'low':d.srScore>=8?'medium':'high'}" style="width:${d.srScore/20*100}%"></div></div></div>
+          <div class="metric-card"><div class="metric-label">Emergency Fund</div><div class="metric-val">${d.efScore}/20</div><div class="score-bar"><div class="score-fill ${d.efScore>=15?'low':d.efScore>=8?'medium':'high'}" style="width:${d.efScore/20*100}%"></div></div></div>
+        </div>
+        <div class="grid-2" style="margin-bottom:20px;">
+          <div class="metric-card"><div class="metric-label">Debt Management</div><div class="metric-val">${d.drScore}/20</div><div class="score-bar"><div class="score-fill ${d.drScore>=15?'low':d.drScore>=8?'medium':'high'}" style="width:${d.drScore/20*100}%"></div></div></div>
+          <div class="metric-card"><div class="metric-label">Protection Coverage</div><div class="metric-val">${d.pgScore}/20</div><div class="score-bar"><div class="score-fill ${d.pgScore>=15?'low':d.pgScore>=8?'medium':'high'}" style="width:${d.pgScore/20*100}%"></div></div></div>
+        </div>
+
+        <div class="section-label">Risk Score</div>
+        <div class="grid-3" style="margin-bottom:16px;">
+          <div class="metric-card" style="border-top-color:${scoreColor};">
+            <div class="metric-label" style="color:${scoreColor};">Risk Score</div>
+            <div style="font-family:var(--mono);font-size:30px;color:${scoreColor};">${d.riskScore}/100</div>
+            <div class="metric-sub">${d.riskBand} RISK</div>
+          </div>
+          <div class="metric-card"><div class="metric-label">Survival Runway</div><div class="metric-val">${d.survivalMonths.toFixed(1)} mo</div><div class="metric-sub">${d.survivalMonths < 3?'Critical':d.survivalMonths<6?'Below target':'Adequate'}</div></div>
+          <div class="metric-card"><div class="metric-label">Protection Gap</div><div class="metric-val" style="font-size:18px;">${P(d.netGap)}</div><div class="metric-sub">Unprotected</div></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="section-label">Risk Dimensions</div>
+          ${d.riskDims.map(dim => {
+            const p = Math.round((dim.score/dim.max)*100);
+            const cls = p>=75?'critical':p>=50?'high':p>=25?'medium':'low';
+            return `<div style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+                <div style="font-size:11px;color:rgba(255,255,255,0.7);">${dim.label}</div>
+                <div style="font-family:var(--mono);font-size:11px;color:#fff;">${dim.score}/${dim.max}</div>
+              </div>
+              <div class="score-bar"><div class="score-fill ${cls}" style="width:${p}%"></div></div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="card">
+          <div class="section-label">Score Interpretation</div>
+          ${[{r:'75–100',l:'Strong',desc:'Well-managed finances. Focus on growth and legacy.'},{r:'50–74',l:'Fair',desc:'Some gaps. Address highest risk areas.'},{r:'30–49',l:'At Risk',desc:'Multiple critical areas. Prioritise protection.'},{r:'0–29',l:'Critical',desc:'Immediate action required on all fronts.'}].map(s=>`
+            <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--gold);width:50px;flex-shrink:0;">${s.r}</div>
+              <div><div style="font-size:12px;font-weight:600;color:#fff;">${s.l}</div><div style="font-size:11px;color:var(--gray);">${s.desc}</div></div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderReport(d) {
+  const today = new Date().toLocaleDateString('en-ZA', { year:'numeric', month:'long', day:'numeric' });
+  document.getElementById('report-content').innerHTML = `
+    <div class="no-print" style="margin-bottom:16px;display:flex;gap:10px;">
+      <button class="btn btn-gold btn-lg" onclick="window.print()">Print Report</button>
+      <button class="btn btn-outline" onclick="showPanel('dashboard',document.getElementById('nav-dashboard'))">← Back to Dashboard</button>
+    </div>
+
+    <div class="print-only" style="text-align:center;margin-bottom:24px;padding:16px;border-bottom:2px solid #C9A84C;">
+      <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#C9A84C;">Generational Wealth Builders</div>
+      <div style="font-size:24px;font-weight:700;margin:6px 0;">Financial Planning Report</div>
+      <div style="font-size:12px;color:#666;">${d.name} · Prepared ${today}</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">1. Financial Summary</div>
+        <div class="card-sub">${d.name} · Age ${d.age} · ${d.avatar} · Report Date: ${today}</div>
+      </div>
+      <div class="grid-4">
+        <div class="metric-card"><div class="metric-label">Monthly Income</div><div class="metric-val">${P(d.totalIncome)}</div></div>
+        <div class="metric-card"><div class="metric-label">Monthly Expenses</div><div class="metric-val">${P(d.totalExpenses)}</div></div>
+        <div class="metric-card ${d.cashflow>=0?'success':'danger'}"><div class="metric-label">Monthly Cashflow</div><div class="metric-val">${P(d.cashflow)}</div></div>
+        <div class="metric-card"><div class="metric-label">Savings Rate</div><div class="metric-val">${(d.savingsRate*100).toFixed(1)}%</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">2. Net Worth Statement</div></div>
+      <div class="grid-2">
+        <div>
+          <div class="section-label">Assets</div>
+          <table class="data-table">
+            <tbody>
+              ${d.assets.property_primary ? `<tr><td>Primary Property</td><td class="mono">${P(d.assets.property_primary)}</td></tr>` : ''}
+              ${d.assets.property_inv ? `<tr><td>Investment Properties</td><td class="mono">${P(d.assets.property_inv)}</td></tr>` : ''}
+              ${d.assets.business ? `<tr><td>Business Value</td><td class="mono">${P(d.assets.business)}</td></tr>` : ''}
+              ${d.assets.investments + d.assets.retirement ? `<tr><td>Investments & Retirement</td><td class="mono">${P(d.assets.investments + d.assets.retirement)}</td></tr>` : ''}
+              ${d.assets.cash + d.assets.vehicles + d.assets.other ? `<tr><td>Cash, Vehicles & Other</td><td class="mono">${P(d.assets.cash + d.assets.vehicles + d.assets.other)}</td></tr>` : ''}
+              <tr class="total"><td><strong>Total Assets</strong></td><td class="mono">${P(d.totalAssets)}</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="section-label">Liabilities</div>
+          <table class="data-table">
+            <tbody>
+              ${d.debt.mortgage ? `<tr><td>Mortgage</td><td class="mono" style="color:#C9344C;">${P(d.debt.mortgage)}</td></tr>` : ''}
+              ${d.debt.vehicle ? `<tr><td>Vehicle Loans</td><td class="mono" style="color:#C9344C;">${P(d.debt.vehicle)}</td></tr>` : ''}
+              ${d.debt.personal + d.debt.credit ? `<tr><td>Personal & Credit</td><td class="mono" style="color:#C9344C;">${P(d.debt.personal + d.debt.credit)}</td></tr>` : ''}
+              ${d.debt.business + d.debt.other ? `<tr><td>Business & Other Debt</td><td class="mono" style="color:#C9344C;">${P(d.debt.business + d.debt.other)}</td></tr>` : ''}
+              <tr class="total"><td><strong>Total Liabilities</strong></td><td class="mono" style="color:#C9344C;">${P(d.totalDebt)}</td></tr>
+              <tr class="total"><td><strong>NET WORTH</strong></td><td class="mono" style="color:var(--gold);font-size:16px;">${P(d.netWorth)}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">3. Financial Health Score</div></div>
+      <div class="grid-4">
+        <div style="text-align:center;padding:16px;">
+          <div style="font-family:var(--mono);font-size:52px;font-weight:500;color:${d.riskColor==='critical'?'#C9344C':d.riskColor==='high'?'#C98010':d.riskColor==='medium'?'#C9A84C':'#28A060'};">${d.healthScore}</div>
+          <div style="font-size:14px;font-weight:600;color:#fff;">out of 100</div>
+          <div style="font-size:12px;color:var(--gray);margin-top:4px;">${d.scoreLabel}</div>
+        </div>
+        <div class="metric-card"><div class="metric-label">Cashflow</div><div class="metric-val">${d.cfScore}/20</div><div class="score-bar"><div class="score-fill ${d.cfScore>=15?'low':d.cfScore>=8?'medium':'critical'}" style="width:${d.cfScore/20*100}%"></div></div></div>
+        <div class="metric-card"><div class="metric-label">Savings Rate</div><div class="metric-val">${d.srScore}/20</div><div class="score-bar"><div class="score-fill ${d.srScore>=15?'low':d.srScore>=8?'medium':'critical'}" style="width:${d.srScore/20*100}%"></div></div></div>
+        <div class="metric-card"><div class="metric-label">Emergency Fund</div><div class="metric-val">${d.efScore}/20</div><div class="score-bar"><div class="score-fill ${d.efScore>=15?'low':d.efScore>=8?'medium':'critical'}" style="width:${d.efScore/20*100}%"></div></div></div>
+      </div>
+      <div class="grid-2" style="margin-top:12px;">
+        <div class="metric-card"><div class="metric-label">Debt Management</div><div class="metric-val">${d.drScore}/20</div><div class="score-bar"><div class="score-fill ${d.drScore>=15?'low':d.drScore>=8?'medium':'critical'}" style="width:${d.drScore/20*100}%"></div></div></div>
+        <div class="metric-card"><div class="metric-label">Protection Coverage</div><div class="metric-val">${d.pgScore}/20</div><div class="score-bar"><div class="score-fill ${d.pgScore>=15?'low':d.pgScore>=8?'medium':'critical'}" style="width:${d.pgScore/20*100}%"></div></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">4. Protection Gap Analysis</div></div>
+      <table class="data-table">
+        <thead><tr><th>Component</th><th>Calculation</th><th>Amount</th></tr></thead>
+        <tbody>
+          <tr><td>Income Replacement</td><td class="muted">${P(d.totalIncome)}/mo × 12 × ${d.yearsToIndep} yrs</td><td class="mono">${P(d.incomeReplacement)}</td></tr>
+          <tr><td>Outstanding Debt</td><td class="muted">All liabilities</td><td class="mono">${P(d.totalDebt)}</td></tr>
+          <tr><td>Final Expenses</td><td class="muted">Standard provision</td><td class="mono">${P(d.finalExpenses)}</td></tr>
+          <tr class="total"><td><strong>Gross Protection Need</strong></td><td></td><td class="mono">${P(d.grossNeed)}</td></tr>
+          <tr><td>Existing Life Cover</td><td class="muted">Current</td><td class="mono" style="color:#C9344C;">− ${P(d.lifeCover)}</td></tr>
+          <tr><td>Liquid Savings Buffer</td><td class="muted">Current</td><td class="mono" style="color:#C9344C;">− ${P(d.savings)}</td></tr>
+          <tr class="total"><td><strong>NET PROTECTION GAP</strong></td><td></td><td class="mono" style="color:var(--gold);">${P(d.netGap)}</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">5. Retirement Projection</div></div>
+      <div class="grid-3">
+        <div class="metric-card info"><div class="metric-label">Projected Fund</div><div class="metric-val">${P(d.fvRetirement)}</div><div class="metric-sub">At retirement age</div></div>
+        <div class="metric-card ${d.retirementGap>0?'danger':'success'}"><div class="metric-label">Retirement Gap</div><div class="metric-val">${P(d.retirementGap)}</div><div class="metric-sub">${d.retirementGap>0?'Shortfall':'On track'}</div></div>
+        <div class="metric-card"><div class="metric-label">Target Fund</div><div class="metric-val">${P(d.retirementTarget)}</div><div class="metric-sub">Required at retirement</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">6. Advisor Recommendations</div></div>
+      ${d.advisorInsights.map(i=>`<div class="insight ${i.type}"><span class="insight-icon">${i.icon}</span><div><div class="insight-title">${i.title}</div><div class="insight-text">${i.text}</div></div></div>`).join('')}
+      <div class="note-box" style="margin-top:16px;">
+        <strong>Disclaimer:</strong> This report is prepared for advisory discussion purposes only. It does not constitute financial advice. Individual circumstances vary. Please consult a qualified financial advisor. Calculations are estimates based on declared information.
+        <br><br><strong>Prepared by:</strong> ${d.profile.notes ? 'Session notes: '+d.profile.notes.substring(0,100)+'...' : 'Generational Wealth Builders · Thabo Davis Mosemele · +267 73836646'}
+      </div>
+    </div>`;
+}
+
+// ── INIT ─────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  loadAllFromSheets();
+  startWisdomCycle();
+});
+
+// ── SPOUSE INCOME TOGGLE ─────────────────────────────────────
+function toggleSpouseIncome() {
+  const val = document.getElementById('p_spouse_income').value;
+  const hasIncome = val && val !== 'none' && val !== '';
+  document.getElementById('spouse-income-field').style.display = hasIncome ? 'block' : 'none';
+  document.getElementById('spouse-income-income-panel').style.display = hasIncome ? 'block' : 'none';
+  // Sync salary field from profile to income panel
+  const profileSalary = document.getElementById('p_spouse_salary')?.value || '';
+  if (hasIncome && profileSalary) {
+    document.getElementById('i_spouse_salary').value = profileSalary;
+  }
+  calcIncome();
+}
+
+// ── BOOK WISDOM TOASTS ───────────────────────────────────────
+const WISDOM = [
+  { quote: "Protection is not about income. It is about responsibility.", attr: "The Wealth Gap — Core Philosophy" },
+  { quote: "You have not built a financial life. You have built a financial structure with one load-bearing wall. And right now, that wall has no backup.", attr: "Chapter Three — The Breadwinner's Gap" },
+  { quote: "73% of Botswana households have less than 4 months of financial runway relative to their monthly expenses.", attr: "Chapter One — The Question" },
+  { quote: "Next month is a privilege not everyone gets.", attr: "Chapter Six — The Three Lies · Lie One" },
+  { quote: "The question is never whether you can afford the premium. The question is whether the people who depend on you can afford the consequence of you not having it.", attr: "Chapter Six — The Three Lies · Lie Two" },
+  { quote: "He thought I would be fine. He underestimated how much we needed him. Not just emotionally. Practically.", attr: "Chapter Six — Dineo's Story" },
+  { quote: "Nobody ever sat with him and showed him what was possible.", attr: "Chapter Six — The Three Lies" },
+  { quote: "P175 a month. That is less than most people spend on airtime. And it would have kept those children in school.", attr: "Chapter Two — Jakoba's Story" },
+  { quote: "Responsibility does not have a minimum income requirement. And neither does the solution.", attr: "Chapter Two — The Essential Provider's Gap" },
+  { quote: "The single professional who acts now is making a decision on behalf of everyone who will ever matter to them. That is generational thinking.", attr: "Chapter Five — The Single Professional's Gap" },
+  { quote: "Assets without structure become liabilities. The wealth builder's risk is not poverty — it is erosion.", attr: "Chapter Four — The Wealth Builder's Gap" },
+  { quote: "She cried — not from fear. From relief. Because what she needed cost less than she had ever imagined.", attr: "Chapter One — Neo's Story" },
+  { quote: "For the breadwinner, the gap is not theoretical. It is the bond, the school fees, the car, the medical aid. All of it stops. Immediately.", attr: "Chapter Three — The Breadwinner's Gap" },
+  { quote: "Kgothatso died at his desk on a Tuesday. Within eight months, his family had lost almost everything built in seventeen years.", attr: "Chapter Three — Kgothatso's Story" },
+];
+
+let wisdomTimer, wisdomDismissed = false;
+
+function startWisdomCycle() {
+  // Show first toast after 45 seconds, then every 3.5 minutes
+  setTimeout(() => showWisdom(), 45000);
+}
+
+function showWisdom() {
+  if (wisdomDismissed) return;
+  const w = WISDOM[Math.floor(Math.random() * WISDOM.length)];
+  document.getElementById('wt-quote').textContent = '"' + w.quote + '"';
+  document.getElementById('wt-attr').textContent = '— ' + w.attr;
+  document.getElementById('wisdom-toast').classList.add('show');
+  // Auto-hide after 12 seconds
+  clearTimeout(wisdomTimer);
+  wisdomTimer = setTimeout(() => {
+    document.getElementById('wisdom-toast').classList.remove('show');
+    setTimeout(() => showWisdom(), 210000); // next one in 3.5 min
+  }, 12000);
+}
+
+function dismissWisdom() {
+  document.getElementById('wisdom-toast').classList.remove('show');
+  clearTimeout(wisdomTimer);
+  setTimeout(() => showWisdom(), 210000);
+}
+
+// Trigger wisdom on specific panel visits
+const PANEL_WISDOM = {
+  income: 7,   // "P175/month less than airtime"
+  gap: 4,      // "Next month is a privilege"
+  dashboard: 5, // "The question is never whether you can afford"
+  insurance: 2, // "One load-bearing wall"
+};
+
+// ── SHOWPANEL OVERRIDE ───────────────────────────────────────
+const _origShowPanel = showPanel;
+function showPanel(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = {
+    clients:'Client Database', profile:'Client Profile', income:'Income Analysis',
+    expenses:'Expense Analysis', savings:'Savings & Investments', debt:'Debt Analysis',
+    assets:'Assets', insurance:'Insurance & Protection', retirement:'Retirement Planning',
+    dashboard:'Financial Dashboard', gap:'Gap Analysis', score:'Financial Health Score',
+    calendar:'Session Calendar', report:'Report Generator', products:'Product Recommendations'
+  };
+  document.getElementById('tb-title').textContent = titles[id] || id;
+  // Render calendar when opened
+  if (id === 'calendar') setTimeout(renderCalendar, 60);
+  // Trigger panel-specific wisdom
+  if (PANEL_WISDOM[id] !== undefined) {
+    setTimeout(() => {
+      const w = WISDOM[PANEL_WISDOM[id]];
+      document.getElementById('wt-quote').textContent = '"' + w.quote + '"';
+      document.getElementById('wt-attr').textContent = '— ' + w.attr;
+      document.getElementById('wisdom-toast').classList.add('show');
+      clearTimeout(wisdomTimer);
+      wisdomTimer = setTimeout(() => document.getElementById('wisdom-toast').classList.remove('show'), 10000);
+    }, 1500);
+  }
+}
+
+// ── PRODUCT RECOMMENDATIONS ENGINE ───────────────────────────
+const PRODUCTS_DB = {
+  tshepo: {
+    name:'Tshepo Funeral Plan', insurer:'Assure Wealth', type:'funeral',
+    value:'From P45.78/month · Protects up to P50,000 family payout',
+    avatars:['essential','breadwinner','single','wealth'],
+    leads:['essential'],
+    features:['Family cover P50,000 from P128.13/month','No medical underwriting — immediate cover','Optional tombstone P20,000 for P34.63/month','Optional headstone P5,000 for P16.16/month','Parent cover available per parent','Extended family cover by age band'],
+    why:'The lowest-cost entry point in the market. No medical questions, no waiting period, immediate family protection. For Essential Providers, this is the first yes — the door that opens.',
+    watchOut:'Funeral cover only — does not replace income. Must eventually be paired with life cover.',
+    notFitText:'Not priority — this avatar requires income replacement as the first product.'
+  },
+  mmoloki: {
+    name:'Mmoloki Family Wealth Protector', insurer:'Botswana Life', type:'funeral',
+    value:'From ~P80/month · 27 members + P15,000 income bridge',
+    avatars:['essential','breadwinner','wealth'],
+    leads:[],
+    features:['Covers up to 27 family members','Double payout on accidental death','P2,500/month × 6 months family income on death','Premium waiver if premium payer dies or is disabled','5% cashback every 3 years — even if claimed','Cover continues for life after age 65'],
+    why:'The most comprehensive funeral product in the market. The double accident payout and 27-member capacity fit large family obligations. The income bridge (P15,000) buys the family crucial time.',
+    watchOut:'Still funeral cover — not income replacement. The P15,000 income bridge is valuable but minimal for breadwinner households.',
+    notFitText:'Not priority for this profile — consider as an add-on once primary life cover is in place.'
+  },
+  lerako: {
+    name:'Lerako Life Cover', insurer:'Hollard Life Botswana', type:'life',
+    value:'From ~P300/month · Up to P15M estate protection',
+    avatars:['breadwinner','wealth','single'],
+    leads:['wealth'],
+    features:['Life + disability cover up to P15 million','10% cashback every 5 years with no claims','Joint life option — spouse on same policy','Optional Critical Illness cover (P40k–P7.5M)','Optional Permanent Disability (P40k–P15M)','Unemployment & pregnancy premium waiver','No waiting period for death or disability','Cedeable to financial institution for bond'],
+    why:'Designed for bond protection — ideal for breadwinners with a home loan and wealth builders with business liabilities. The joint life option and no waiting period make it the go-to for married breadwinners.',
+    watchOut:'Term assurance — best used ceded to a lender (bond/business loan). Less suitable as standalone income replacement without an underlying liability.',
+    notFitText:'Not the lead product for this avatar — introduce in later sessions once primary gap is closed.'
+  },
+  poelo: {
+    name:'Poelo Whole of Life', insurer:'Botswana Life Insurance', type:'life',
+    value:'From ~P400/month · Lifetime cover + 120% payback',
+    avatars:['breadwinner','wealth','single','essential'],
+    leads:['breadwinner','single'],
+    features:['Whole of life — pays out whenever death occurs','P100,000 minimum to P100 million maximum','120% premium payback after 15 years (no claims)','Stop paying at age 65, 70, or 75 — cover continues','BWP or USD denomination option','Spouse coverable on same policy','Optional: disability, dread disease, accidental death','Tax-advantaged savings component','No waiting period — immediate cover from day one'],
+    why:'The flagship product. Lifetime cover + 120% payback makes it both protection AND long-term savings. Single professionals lock in the lowest premium of their life now. Breadwinners close the full income replacement gap.',
+    watchOut:'Minimum P100,000 sum assured — may be above Essential Provider budgets at entry. Full medical underwriting required.',
+    notFitText:'Can be introduced but budget may not support minimum sum assured — start with Tshepo and build.'
+  }
+};
+
+function renderProducts(d) {
+  // Avatar key
+  let avatarKey;
+  if (d.avatar === 'Essential Provider') avatarKey = 'essential';
+  else if (d.avatar === 'Breadwinner') avatarKey = 'breadwinner';
+  else if (d.avatar === 'Wealth Builder') avatarKey = 'wealth';
+  else avatarKey = 'single';
+
+  const avatarIcons = {essential:'🛡️', breadwinner:'🏡', wealth:'📈', single:'🚀'};
+  const icon = avatarIcons[avatarKey];
+
+  const strategyText = {
+    essential: `Income ${P(d.totalIncome)}/month. Two-step strategy: <strong>Step 1</strong> — Tshepo Funeral Plan today (P128.13/month, no medicals, done this session). <strong>Step 2</strong> — Poelo or Mmoloki within 3 months to begin building life cover. "We close the most urgent door first. Then we build."`,
+    breadwinner: `Income ${P(d.totalIncome)}/month. Gap ${P(d.netGap)}. Three-layer strategy: <strong>Layer 1</strong> — Poelo Whole of Life for full income replacement. <strong>Layer 2</strong> — Lerako for bond/liability protection. <strong>Layer 3</strong> — Mmoloki for funeral dignity without touching life cover.`,
+    wealth: `Assets ${P(d.totalAssets)}. Estate & liquidity strategy: <strong>Primary</strong> — Poelo for estate liquidity outside probate. <strong>Secondary</strong> — Lerako for business loan protection. <strong>Funeral</strong> — Mmoloki at maximum cover. "You have built this over years. One gap in your structure means your family receives a fraction."`,
+    single: `Age ${d.age}. Lock-in strategy: <strong>Now</strong> — Poelo Whole of Life at the lowest premium of your life. Every year of delay = higher cost forever. <strong>Parents</strong> — Tshepo or Mmoloki to cover parents if supported financially. "You do not need dependents to make this the smartest decision of your decade. You need time — and you still have it."`
+  };
+
+  const openingLines = {
+    essential: `"${d.name}, based on what you've shared, your family has ${d.survivalMonths.toFixed(1)} months of financial runway. I want to show you something that costs P128 a month. Let me show you what that P128 does for your children."`,
+    breadwinner: `"${d.name}, your gap is ${P(d.netGap)}. That is what your family is currently exposed to. We are closing it today — in three layers. Each product has one job. Let me show you."`,
+    wealth: `"${d.name}, you've spent years building this. The risk isn't poverty — it's erosion. What happens to everything you've built during the 12 to 24 months your estate is being finalised? Let me show you what that costs and what it costs to prevent it."`,
+    single: `"${d.name}, at age ${d.age} the premium for P500,000 of whole life cover is approximately ${P(Math.round(d.age * 9 + 180))}/month. At age ${d.age + 10} it becomes approximately ${P(Math.round((d.age+10) * 9 + 180))}/month. That difference — paid over 20 years — is the true cost of delay. Today you have something breadwinners would pay to get back: time."`
+  };
+
+  const closingStories = {
+    essential: `<strong>The Jakoba Close:</strong> "Jakoba earned P5,200 a month. He worked nights. He loved his four children completely. He put off getting cover — not because he didn't care, but because nobody ever showed him that P175 a month would have changed everything. His daughter has not been back to school since. P128. That's all it takes to make sure that never happens to your family."`,
+    breadwinner: `<strong>The Kgothatso Close:</strong> "Kgothatso earned P19,000 a month. He always meant to sort this out. He died at his desk on a Tuesday. Within 8 months, his family had lost almost everything they had spent 17 years building. His wife said: 'He thought I would be fine. He underestimated how much we needed him.' You are sitting in front of me. That is already different from Kgothatso. Let's finish what you came here to do."`,
+    wealth: `<strong>The Estate Close:</strong> "Your assets look strong on paper. But assets in probate are not liquid. The moment you're gone, everything freezes — sometimes for two years. Your family can't sell the property. They can't access the business account. Poelo pays outside the estate, within weeks. That is what protects what you've built while everything else is being sorted."`,
+    single: `<strong>The Naledi Close:</strong> "Naledi was 27 and skeptical. Her advisor showed her the cost at 27 versus 37. She signed. Two years later she got engaged. She told her fiancé: 'I already have a plan. You just didn't know about it yet.' You are in the same position Naledi was in. The decision you make today is a decision on behalf of everyone who will ever matter to you."`
+  };
+
+  // Build product cards
+  const prodOrder = avatarKey === 'essential'
+    ? ['tshepo','mmoloki','poelo','lerako']
+    : avatarKey === 'breadwinner' /* value-framed */
+    ? ['poelo','lerako','mmoloki','tshepo']
+    : avatarKey === 'wealth'
+    ? ['poelo','lerako','mmoloki','tshepo']
+    : ['poelo','tshepo','mmoloki','lerako'];
+
+  let cardsHTML = '<div class="prod-grid">';
+  prodOrder.forEach(pid => {
+    const p = PRODUCTS_DB[pid];
+    const isLead = p.leads.includes(avatarKey);
+    const isRec = p.avatars.includes(avatarKey) && !isLead;
+    let badgeCls, badgeLabel, cardCls;
+    if (isLead) { badgeCls='lead'; badgeLabel='⭐ Lead Product'; cardCls='lead'; }
+    else if (isRec) { badgeCls=p.type==='funeral'?'add':'sec'; badgeLabel=p.type==='funeral'?'⚰️ Funeral Add-On':'➕ Secondary'; cardCls='secondary'; }
+    else { badgeCls='no'; badgeLabel='✕ Not Priority'; cardCls='not-fit'; }
+    const feats = p.features.slice(0,5).map(f=>`<div class="pc-feat">${f}</div>`).join('');
+    cardsHTML += `
+      <div class="prod-card ${cardCls}">
+        <div class="pc-header">
+          <span class="pc-badge ${badgeCls}">${badgeLabel}</span>
+          <div class="pc-name">${p.name}</div>
+          <div class="pc-insurer">${p.insurer}</div>
+        </div>
+        <div class="pc-body">
+          <div class="pc-why">${isLead || isRec ? p.why : p.notFitText}</div>
+          <div class="pc-features">${feats}</div>
+          <div class="pc-prem"><span class="pc-prem-label">Investment in Protection</span><span class="pc-prem-val">${p.value}</span></div>
+          ${isLead || isRec ? `<div class="pc-watch">⚠️ <span>${p.watchOut}</span></div>` : ''}
+        </div>
+      </div>`;
+  });
+  cardsHTML += '</div>';
+
+  document.getElementById('products-content').innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Product Recommendation — ${d.name}</div>
+        <div class="card-sub">Based on avatar, gap size, age, health, and budget. All recommendations are illustrative — actual premiums subject to underwriting.</div>
+      </div>
+      <div class="avatar-strategy">
+        <div class="as-icon">${icon}</div>
+        <div>
+          <div class="as-title">${d.avatar} Strategy</div>
+          <div class="as-sub">Gap: ${P(d.netGap)} · Age: ${d.age} · Income: ${P(d.totalIncome)}/month</div>
+          <div class="as-logic">${strategyText[avatarKey]}</div>
+        </div>
+      </div>
+    </div>
+
+    ${cardsHTML}
+
+    ${avatarKey === 'essential' ? `
+    <div class="card">
+      <div class="section-label">Tshepo Funeral Plan — Full Rate Schedule (Assure Wealth)</div>
+      <div style="font-size:12px;color:var(--gray);margin-bottom:14px;line-height:1.6;">No medical underwriting. Immediate cover. The most accessible entry point for Essential Providers.</div>
+      <div class="grid-2">
+        <div>
+          <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px;">Section A — Member Only / Family</div>
+          <table class="tshepo-table">
+            <thead><tr><th>Option</th><th>Sum Assured</th><th>Member Only</th><th>Family</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>P25,000</td><td>P45.78</td><td>P69.06</td></tr>
+              <tr><td>2</td><td>P50,000</td><td>P76.57</td><td>P128.13</td></tr>
+              <tr><td>3</td><td>P75,000</td><td>P108.35</td><td>P186.74</td></tr>
+              <tr><td>4</td><td>P100,000</td><td>P138.14</td><td>P245.05</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px;">Section B — Per Parent</div>
+          <table class="tshepo-table">
+            <thead><tr><th>Option</th><th>Sum Assured</th><th>Per Parent</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>P10,000</td><td>P52.78</td></tr>
+              <tr><td>2</td><td>P20,000</td><td>P95.48</td></tr>
+              <tr><td>3</td><td>P30,000</td><td>P188.23</td></tr>
+            </tbody>
+          </table>
+          <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin:12px 0 8px;">Section D — Optional Benefits</div>
+          <table class="tshepo-table">
+            <thead><tr><th>Benefit</th><th>Amount</th><th>Monthly</th></tr></thead>
+            <tbody>
+              <tr><td>Tombstone</td><td>P20,000</td><td>P34.63</td></tr>
+              <tr><td>Headstone</td><td>P5,000</td><td>P16.16</td></tr>
+              <tr><td>Catering</td><td>P10,000</td><td>P22.31</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin:12px 0 8px;">Section C — Extended Family Member (by Age Band)</div>
+      <table class="tshepo-table">
+        <thead><tr><th>Age Band</th><th>P10,000</th><th>P20,000</th><th>P30,000</th></tr></thead>
+        <tbody>
+          <tr><td>≤30</td><td>P16.37</td><td>P22.75</td><td>P29.12</td></tr>
+          <tr><td>30–40</td><td>P27.00</td><td>P44.01</td><td>P61.01</td></tr>
+          <tr><td>40–50</td><td>P30.50</td><td>P51.00</td><td>P71.50</td></tr>
+          <tr><td>50–60</td><td>P35.25</td><td>P60.50</td><td>P85.76</td></tr>
+          <tr><td>60–65</td><td>P42.75</td><td>P75.57</td><td>P108.36</td></tr>
+          <tr><td>65–70</td><td>P49.51</td><td>P89.03</td><td>P128.54</td></tr>
+          <tr><td>70–74</td><td>P69.49</td><td>P128.97</td><td>P188.46</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box">Total Monthly Premium = A + B + C + D. Family cover at P50,000 = P128.13/month. Add tombstone and the total is P162.76/month — still under P175, which is the access point discussed in the book.</div>
+    </div>` : ''}
+
+    <div class="card">
+      <div class="section-label">Session Script</div>
+      <div class="script-box">
+        <div class="script-box-label">Opening Line for This Client</div>
+        <div class="script-box-text">${openingLines[avatarKey]}</div>
+      </div>
+      <div class="script-box">
+        <div class="script-box-label">Story Close — Use at the End</div>
+        <div class="script-box-text" style="font-style:normal;">${closingStories[avatarKey]}</div>
+      </div>
+    </div>`;
+}
+
+// ── SESSION CALENDAR ─────────────────────────────────────────
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth(); // 0-indexed
+
+function calNav(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+function getAllSessions() {
+  // Gather all clients with a session_date
+  const sessions = [];
+  clientDB.forEach(c => {
+    const sd = c.profile?.session_date;
+    if (sd) sessions.push({
+      date: sd,
+      name: c.profile?.name || 'Unnamed',
+      id: c.id,
+      status: c.profile?.pipeline_status || 'booked',
+      avatar: c.analysis?.avatar || '',
+      gap: c.analysis?.netGap || 0,
+    });
+    // Also follow-up date
+    const fd = c.profile?.followup_date;
+    if (fd) sessions.push({
+      date: fd,
+      name: (c.profile?.name || 'Unnamed') + ' (Follow-up)',
+      id: c.id,
+      status: 'followup',
+      avatar: '',
+      gap: 0,
+    });
+  });
+  return sessions;
+}
+
+function renderCalendar() {
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+
+  document.getElementById('cal-month-label').textContent = monthNames[calMonth] + ' ' + calYear;
+
+  const sessions = getAllSessions();
+  // Build date → sessions map
+  const sessMap = {};
+  sessions.forEach(s => {
+    if (!sessMap[s.date]) sessMap[s.date] = [];
+    sessMap[s.date].push(s);
+  });
+
+  // First day of month, days in month
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const prevMonthDays = new Date(calYear, calMonth, 0).getDate();
+
+  let gridHTML = '';
+  // Day headers
+  dayNames.forEach(d => {
+    gridHTML += `<div class="cal-day-header">${d}</div>`;
+  });
+
+  // Prev month filler
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const dayNum = prevMonthDays - i;
+    gridHTML += `<div class="cal-day other-month"><div class="cal-day-num">${dayNum}</div></div>`;
+  }
+
+  // Current month days
+  for (let d = 1; d <= daysInMonth; d++) {
+    const pad = n => String(n).padStart(2,'0');
+    const dateStr = calYear + '-' + pad(calMonth+1) + '-' + pad(d);
+    const daySessions = sessMap[dateStr] || [];
+    const isToday = dateStr === todayStr;
+    const hasSess = daySessions.length > 0;
+    const classes = ['cal-day', isToday?'today':'', hasSess?'has-session':'', ''].filter(Boolean).join(' ');
+    const dotsHTML = daySessions.slice(0,2).map(s =>
+      `<div class="cal-session-dot" onclick="loadClient('${s.id}');showPanel('profile',document.getElementById('nav-profile'))" title="${s.name}">${s.name.split(' ')[0]}</div>`
+    ).join('') + (daySessions.length > 2 ? `<div class="cal-session-dot" style="background:rgba(201,168,76,0.3);color:var(--gold);">+${daySessions.length-2} more</div>` : '');
+    gridHTML += `<div class="${classes}"><div class="cal-day-num">${d}</div>${dotsHTML}</div>`;
+  }
+
+  // Next month filler
+  const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
+  for (let d = 1; d <= totalCells - firstDay - daysInMonth; d++) {
+    gridHTML += `<div class="cal-day other-month"><div class="cal-day-num">${d}</div></div>`;
+  }
+
+  document.getElementById('cal-grid').innerHTML = gridHTML;
+
+  // ── Upcoming sessions (this month + future, sorted) ──────────
+  const todayDate = new Date(todayStr);
+  const upcoming = sessions
+    .filter(s => new Date(s.date) >= todayDate)
+    .sort((a,b) => a.date.localeCompare(b.date))
+    .slice(0, 10);
+
+  const upcomingEl = document.getElementById('upcoming-sessions-list');
+  if (upcoming.length === 0) {
+    upcomingEl.innerHTML = '<div class="cal-empty">No upcoming sessions. Book a session by setting a Session Date in the client profile.</div>';
+  } else {
+    upcomingEl.innerHTML = upcoming.map(s => {
+      const dt = new Date(s.date + 'T00:00:00');
+      const label = dt.toLocaleDateString('en-ZA', {weekday:'short', day:'numeric', month:'short'});
+      const statusCls = s.status === 'closed' ? 'closed' : s.status === 'seen' ? 'seen' : 'booked';
+      const statusLabel = s.status === 'followup' ? 'Follow-up' : s.status === 'closed' ? 'Closed' : s.status === 'seen' ? 'Done' : 'Booked';
+      return `<div class="session-list-item" onclick="loadClient('${s.id}');showPanel('profile',document.getElementById('nav-profile'))">
+        <div class="sli-date">${label}</div>
+        <div class="sli-name">${s.name}</div>
+        <div class="sli-meta">${s.avatar || '—'}</div>
+        <div class="sli-status ${statusCls}">${statusLabel}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── Past sessions this month ──────────────────────────────────
+  const pad2 = n => String(n).padStart(2,'0');
+  const monthStart = calYear + '-' + pad2(calMonth+1) + '-01';
+  const past = sessions
+    .filter(s => s.date >= monthStart && new Date(s.date) < todayDate)
+    .sort((a,b) => b.date.localeCompare(a.date));
+
+  const pastEl = document.getElementById('past-sessions-list');
+  if (past.length === 0) {
+    pastEl.innerHTML = '<div class="cal-empty">No past sessions this month.</div>';
+  } else {
+    pastEl.innerHTML = past.map(s => {
+      const dt = new Date(s.date + 'T00:00:00');
+      const label = dt.toLocaleDateString('en-ZA', {weekday:'short', day:'numeric', month:'short'});
+      const statusCls = s.status === 'closed' ? 'closed' : s.status === 'seen' ? 'seen' : 'booked';
+      const statusLabel = s.status === 'closed' ? 'Closed' : s.status === 'seen' ? 'Done' : 'Booked';
+      return `<div class="session-list-item" onclick="loadClient('${s.id}');showPanel('profile',document.getElementById('nav-profile'))">
+        <div class="sli-date">${label}</div>
+        <div class="sli-name">${s.name}</div>
+        <div class="sli-meta">${s.avatar || '—'}</div>
+        <div class="sli-status ${statusCls}">${statusLabel}</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+// Init calendar on load
+document.addEventListener('DOMContentLoaded', () => {
+  calYear = new Date().getFullYear();
+  calMonth = new Date().getMonth();
+});
+
+</script>
+</body>
+</html>
