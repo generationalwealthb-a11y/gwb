@@ -1087,6 +1087,7 @@ async function loadAllFromSheets() {
     if (res.success) {
       clientDB = res.clients || [];
       renderClientList();
+      renderPipeline();
       setSyncStatus('ok', `Loaded ${clientDB.length} client${clientDB.length!==1?'s':''}`);
     } else {
       setSyncStatus('error', res.error || 'Load failed');
@@ -1103,6 +1104,7 @@ async function saveClientToSheets(client) {
     const res = await sheetsPost({ action: 'save', client });
     if (res.success) {
       setSyncStatus('ok', '✓ Saved — ' + (client.profile?.name || 'Client'));
+      renderPipeline();
     } else {
       setSyncStatus('error', res.error || 'Save failed');
     }
@@ -1151,7 +1153,7 @@ function showPanel(id, el) {
     clients:'Client Database', profile:'Client Profile', income:'Income Analysis',
     expenses:'Expense Analysis', savings:'Savings & Investments', debt:'Debt Analysis',
     assets:'Assets', insurance:'Insurance & Protection', retirement:'Retirement Planning',
-    dashboard:'Financial Dashboard', gap:'Gap Analysis', score:'Financial Health Score',
+    dashboard:'Financial Dashboard', gap:'Gap Analysis', score:'Financial Health Score', pipeline:'Client Pipeline',
     calendar:'Session Calendar', report:'Report Generator'
   };
   document.getElementById('tb-title').textContent = titles[id] || id;
@@ -1954,7 +1956,7 @@ function renderSavingsDebtChart(d) {
     data: {
       labels: ['Total Savings','Total Debt'],
       datasets: [{
-        data: [d.savings, d.totalDebt],
+        data: [(d.savings?.emergency||0)+(d.savings?.cash||0)+(d.savings?.portfolio||0)+(d.savings?.shares||0), d.totalDebt],
         backgroundColor: ['rgba(26,112,72,0.6)','rgba(201,52,76,0.6)'],
         borderColor: ['#1A7048','#C9344C'], borderWidth:1, borderRadius:5
       }]
@@ -2009,7 +2011,7 @@ function renderGap(d) {
           <tr><td>Final Expenses (funeral + estate)</td><td class="muted">Standard provision</td><td class="mono">${P(d.finalExpenses)}</td></tr>
           <tr class="total"><td><strong>Gross Protection Need</strong></td><td></td><td class="mono">${P(d.grossNeed)}</td></tr>
           <tr><td>Existing Life Cover</td><td class="muted">Declared</td><td class="mono" style="color:#C9344C;">− ${P(d.lifeCover)}</td></tr>
-          <tr><td>Liquid Savings</td><td class="muted">Declared</td><td class="mono" style="color:#C9344C;">− ${P(d.savings)}</td></tr>
+          <tr><td>Liquid Savings</td><td class="muted">Declared</td><td class="mono" style="color:#C9344C;">− ${P((d.savings?.emergency||0)+(d.savings?.cash||0)+(d.savings?.portfolio||0)+(d.savings?.shares||0))}</td></tr>
           <tr class="total"><td><strong>NET PROTECTION GAP</strong></td><td></td><td class="mono" style="color:var(--gold);font-size:17px;">${P(d.netGap)}</td></tr>
         </tbody>
       </table>
@@ -2186,7 +2188,7 @@ function renderReport(d) {
           <tr><td>Final Expenses</td><td class="muted">Standard provision</td><td class="mono">${P(d.finalExpenses)}</td></tr>
           <tr class="total"><td><strong>Gross Protection Need</strong></td><td></td><td class="mono">${P(d.grossNeed)}</td></tr>
           <tr><td>Existing Life Cover</td><td class="muted">Current</td><td class="mono" style="color:#C9344C;">− ${P(d.lifeCover)}</td></tr>
-          <tr><td>Liquid Savings Buffer</td><td class="muted">Current</td><td class="mono" style="color:#C9344C;">− ${P(d.savings)}</td></tr>
+          <tr><td>Liquid Savings Buffer</td><td class="muted">Current</td><td class="mono" style="color:#C9344C;">− ${P((d.savings?.emergency||0)+(d.savings?.cash||0)+(d.savings?.portfolio||0)+(d.savings?.shares||0))}</td></tr>
           <tr class="total"><td><strong>NET PROTECTION GAP</strong></td><td></td><td class="mono" style="color:var(--gold);">${P(d.netGap)}</td></tr>
         </tbody>
       </table>
@@ -2295,7 +2297,7 @@ function showPanel(id, el) {
     clients:'Client Database', profile:'Client Profile', income:'Income Analysis',
     expenses:'Expense Analysis', savings:'Savings & Investments', debt:'Debt Analysis',
     assets:'Assets', insurance:'Insurance & Protection', retirement:'Retirement Planning',
-    dashboard:'Financial Dashboard', gap:'Gap Analysis', score:'Financial Health Score',
+    dashboard:'Financial Dashboard', gap:'Gap Analysis', score:'Financial Health Score', pipeline:'Client Pipeline',
     calendar:'Session Calendar', report:'Report Generator', products:'Product Recommendations'
   };
   document.getElementById('tb-title').textContent = titles[id] || id;
